@@ -8,12 +8,14 @@
     tools:context=".AcadeModeActivity">
 
     <ScrollView
+        android:id="@+id/vertical_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_above="@id/joystick"
         android:layout_margin="16dp">
         <HorizontalScrollView
+            android:id="@+id/horizontal_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <com.tagsoft.mazegame.GameView
@@ -24,6 +26,29 @@
         </HorizontalScrollView>
     </ScrollView>
 
+<!--        <HorizontalScrollView-->
+<!--            android:id="@+id/horizontal_scroll"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:layout_above="@id/joystick"-->
+<!--            android:layout_margin="16dp">-->
+<!--            <com.tagsoft.mazegame.GameView-->
+<!--                android:id="@+id/gameview"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+<!--            </com.tagsoft.mazegame.GameView>-->
+<!--        </HorizontalScrollView>-->
+
+<!--    <com.tagsoft.mazegame.GameView-->
+<!--        android:id="@+id/gameview"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_above="@id/joystick"-->
+<!--        android:layout_margin="16dp">-->
+<!--    </com.tagsoft.mazegame.GameView>-->
+
     <com.tagsoft.mazegame.JoystickView
         android:id="@+id/joystick"
         android:layout_width="150dp"
@@ -33,13 +58,3 @@
 
 </RelativeLayout>
 
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_above="@id/movekey"-->
-    <!--android:layout_margin="16dp">-->
-    <!--<com.tagsoft.mazegame.Board-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"/>-->
-    <!--</ScrollView>-->

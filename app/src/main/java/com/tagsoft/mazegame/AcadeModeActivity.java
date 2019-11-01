@@ -1,12 +1,17 @@
 package com.tagsoft.mazegame;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.HorizontalScrollView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 public class AcadeModeActivity extends AppCompatActivity {
 
+    ScrollView verticalScroll;
+    HorizontalScrollView horizontalScroll;
     GameView gameView;
     JoystickView joystick;
 
@@ -15,9 +20,11 @@ public class AcadeModeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acade_mode);
 
+        verticalScroll = findViewById(R.id.vertical_scroll);
+        horizontalScroll = findViewById(R.id.horizontal_scroll);
         gameView = findViewById(R.id.gameview);
         joystick = findViewById(R.id.joystick);
-        joystick.setBorderColor(R.color.joystickColor);
+        joystick.setBackgroundColor(Color.GRAY);
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
@@ -32,6 +39,10 @@ public class AcadeModeActivity extends AppCompatActivity {
                         gameView.movePlayer(GameView.Direction.DOWN);
                     }
                 }
+
+                verticalScroll.scrollTo((gameView.player.col-5)*100, (gameView.player.row-5)*100);
+                horizontalScroll.scrollTo((gameView.player.col-5)*100, (gameView.player.row-5)*100);
+
                 return;
             }
         });

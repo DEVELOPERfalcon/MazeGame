@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.HorizontalScrollView;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class GameView extends HorizontalScrollView {
 
     private  Cell[][] cells;
     public Cell player, exit;
-    private static final int COLS = 20, ROWS = 10;
+    public static final int COLS = 20, ROWS = 20;
     private static final float WALL_THICKNESS = 4;
     private  float cellSize, hMargin, vMargin;
     private Paint wallPaint, playerPaint, exitPaint;
@@ -169,7 +171,7 @@ public class GameView extends HorizontalScrollView {
         }
     }
 
-//    @Override
+    //    @Override
 //    public boolean onTouchEvent(MotionEvent event) {
 //        if(event.getAction() == MotionEvent.ACTION_DOWN) return true;
 //
@@ -283,10 +285,10 @@ public class GameView extends HorizontalScrollView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(widthMeasureSpec, MeasureSpec.makeMeasureSpec(100*(ROWS+1), MeasureSpec.EXACTLY));
+        setMeasuredDimension(MeasureSpec.makeMeasureSpec(100*(COLS+1), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(100*(ROWS+1), MeasureSpec.EXACTLY));
     }
 
-    private class Cell{
+    public class Cell {
         boolean topWall = true, leftWall = true, bottomWall = true, rightWall = true;
 
         boolean visited = false;
