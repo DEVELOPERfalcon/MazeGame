@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".MainActivity"
+    android:weightSum="3"
+    android:background="#fffeccbe">
+
+    <ImageView
+        android:id="@+id/titleimg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/maze_title"/>
+
+    <Button
+        android:id="@+id/academodebutton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="ACADE MODE"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#4CAF50"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/freemodebutton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="FREE MODE"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#4CAF50"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/finishbutton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="종료"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#4CAF50"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>
