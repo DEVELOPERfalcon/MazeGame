@@ -25,27 +25,44 @@ public class AcadeModeActivity extends AppCompatActivity {
         gameView = findViewById(R.id.gameview);
         joystick = findViewById(R.id.joystick);
         joystick.setBackgroundColor(Color.GRAY);
-        joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
-            @Override
-            public void onMove(int angle, int strength) {
-                if (strength != 0){
-                    if(angle<=45 || angle>315){
-                        gameView.movePlayer(GameView.Direction.RIGHT);
-                    }else if(angle<=135 && angle>45){
-                        gameView.movePlayer(GameView.Direction.UP);
-                    }else if(angle<=225 && angle>135){
-                        gameView.movePlayer(GameView.Direction.LEFT);
-                    }else if(angle<=315 && angle>225){
-                        gameView.movePlayer(GameView.Direction.DOWN);
-                    }
-                }
-
-                verticalScroll.scrollTo((gameView.player.col-5)*100, (gameView.player.row-5)*100);
-                horizontalScroll.scrollTo((gameView.player.col-5)*100, (gameView.player.row-5)*100);
-
-                return;
-            }
-        });
+        joystick.setOnMoveListener(moveListener);
     }
 
+    JoystickView.OnMoveListener moveListener = new JoystickView.OnMoveListener() {
+        @Override
+        public void onMove(int angle, int strength) {
+            if (strength > 80) {
+                if (angle <= 45 || angle > 315) {
+                    gameView.movePlayer(GameView.Direction.RIGHT);
+                } else if (angle <= 135 && angle > 45) {
+                    gameView.movePlayer(GameView.Direction.UP);
+                } else if (angle <= 225 && angle > 135) {
+                    gameView.movePlayer(GameView.Direction.LEFT);
+                } else if (angle <= 315 && angle > 225) {
+                    gameView.movePlayer(GameView.Direction.DOWN);
+                }
+            }else if(strength>0 && strength<=80){
+                if (angle <= 45 || angle > 315) {
+                    gameView.movePlayer(GameView.Direction.RIGHT);
+                } else if (angle <= 135 && angle > 45) {
+                    gameView.movePlayer(GameView.Direction.UP);
+                } else if (angle <= 225 && angle > 135) {
+                    gameView.movePlayer(GameView.Direction.LEFT);
+                } else if (angle <= 315 && angle > 225) {
+                    gameView.movePlayer(GameView.Direction.DOWN);
+                }
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            verticalScroll.scrollTo((gameView.player.col - 5) * 100, (gameView.player.row - 5) * 100);
+            horizontalScroll.scrollTo((gameView.player.col - 5) * 100, (gameView.player.row - 5) * 100);
+
+            return;
+
+        }
+    };
 }
