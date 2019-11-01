@@ -14,7 +14,7 @@ import java.util.Stack;
 
 public class GameView extends HorizontalScrollView {
 
-    private  enum Direction{
+    public enum Direction{
         UP, DOWN, LEFT, RIGHT
     }
 
@@ -135,7 +135,7 @@ public class GameView extends HorizontalScrollView {
 
     }
 
-    private void movePlayer(Direction direction){
+    public void movePlayer(Direction direction){
         switch (direction){
             case UP:
                 if(!player.topWall) {
@@ -169,49 +169,49 @@ public class GameView extends HorizontalScrollView {
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if(event.getAction() == MotionEvent.ACTION_DOWN) return true;
-
-        if(event.getAction() == MotionEvent.ACTION_MOVE){
-            float x = event.getX();
-            float y = event.getY();
-
-            float playerCenterX = hMargin+(player.col+0.5f)*cellSize;
-            float playerCenterY = vMargin+(player.row+0.5f)*cellSize;
-
-            float dx = x - playerCenterX;
-            float dy = y - playerCenterY;
-
-            float absDx = Math.abs(dx);
-            float absDy = Math.abs(dy);
-
-            if(absDx > cellSize || absDy > cellSize){
-                if(absDx > absDy){
-                    //move in x-direction
-                    if(dx > 0){
-                        //move to the right
-                        movePlayer(Direction.RIGHT);
-                    }else{
-                        //move to the left
-                        movePlayer(Direction.LEFT);
-                    }
-                }else{
-                    //move in y-direction
-                    if(dy > 0){
-                        //move dowm
-                        movePlayer(Direction.DOWN);
-                    }else{
-                        //move up
-                        movePlayer(Direction.UP);
-                    }
-                }
-            }
-            return true;
-        }
-
-        return super.onTouchEvent(event);
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        if(event.getAction() == MotionEvent.ACTION_DOWN) return true;
+//
+//        if(event.getAction() == MotionEvent.ACTION_MOVE){
+//            float x = event.getX();
+//            float y = event.getY();
+//
+//            float playerCenterX = hMargin+(player.col+0.5f)*cellSize;
+//            float playerCenterY = vMargin+(player.row+0.5f)*cellSize;
+//
+//            float dx = x - playerCenterX;
+//            float dy = y - playerCenterY;
+//
+//            float absDx = Math.abs(dx);
+//            float absDy = Math.abs(dy);
+//
+//            if(absDx > cellSize || absDy > cellSize){
+//                if(absDx > absDy){
+//                    //move in x-direction
+//                    if(dx > 0){
+//                        //move to the right
+//                        movePlayer(Direction.RIGHT);
+//                    }else{
+//                        //move to the left
+//                        movePlayer(Direction.LEFT);
+//                    }
+//                }else{
+//                    //move in y-direction
+//                    if(dy > 0){
+//                        //move dowm
+//                        movePlayer(Direction.DOWN);
+//                    }else{
+//                        //move up
+//                        movePlayer(Direction.UP);
+//                    }
+//                }
+//            }
+//            return true;
+//        }
+//
+//        return super.onTouchEvent(event);
+//    }
 
     @Override
     protected void onDraw(Canvas canvas) {

@@ -43,10 +43,10 @@ public class JoystickView extends View implements Runnable {
     //버튼의 기본 색
     private static final int DEFAULT_COLOR_BUTTON = Color.BLACK;
 
-    //버튼 바깥쪽부분의 기본 색깔
+    //border의 기본 색깔
     private static final int DEFAULT_COLOR_BORDER = Color.TRANSPARENT;  //투명
 
-    //바깥쪽 기본 알파값
+    //border 기본 알파값
     private static final int DEFAULT_ALPHA_BORDER = 255;
 
     //기본 배경 색깔
@@ -55,7 +55,7 @@ public class JoystickView extends View implements Runnable {
     //기본 뷰 크기
     private static final int DEFAULT_SIZE = 200;
 
-    //바깥쪽 기본 크기
+    //border 기본 크기
     private static final int DEFAULT_WIDTH_BORDER = 3;
 
     //중심 고정에 대한 기본 동작(자동 정의 아님)
@@ -384,9 +384,9 @@ public class JoystickView extends View implements Runnable {
         }
 
         double abs = Math.sqrt((mPosX - mCenterX) * (mPosX - mCenterX)
-                + (mPosY - mCenterY) * (mPosY - mCenterY));
+                + (mPosY - mCenterY) * (mPosY - mCenterY)); //버튼이 중심에서 움직인 거리
 
-        // (abs > mBorderRadius) 버튼이 너무 멀어서 border로 제한한다는 의미.
+        // (abs > mBorderRadius) 버튼이 너무 멀리 움직이면 border까지로 제한한다는 의미.
         // (buttonStickBorder && abs != 0) means wherever is the button we stick it to the border except when abs == 0
         if (abs > mBorderRadius || (mButtonStickToBorder && abs != 0)) {
             mPosX = (int) ((mPosX - mCenterX) * mBorderRadius / abs + mCenterX);
@@ -399,7 +399,7 @@ public class JoystickView extends View implements Runnable {
                 mCallback.onMove(getAngle(), getStrength());
         }
 
-        //새로 그리기 강요
+        //강제로 새로 그리기
         invalidate();
 
         return true;
