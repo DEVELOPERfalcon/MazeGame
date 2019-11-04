@@ -11,8 +11,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".optionActivity"></activity>
         <activity android:name=".FreeModeActivity" />
-        <activity android:name=".AcadeModeActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".AcadeModeActivity" android:theme="@style/AppTheme.NoActionbar"/>
+        <activity android:name=".MainActivity" android:theme="@style/AppTheme.NoActionbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
