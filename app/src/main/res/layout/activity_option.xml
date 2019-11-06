@@ -1,9 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".optionActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#E7EF9B">
+
+            <TextView
+                android:id="@+id/tv_joystick_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="조이스틱 위치"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"/>
+
+            <RadioGroup
+                android:id="@+id/radiogroup_joystick_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/tv_joystick_location"
+                android:gravity="center_horizontal">
+
+                <RadioButton
+                    android:id="@+id/radiobutton_joystick_location_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="좌"
+                    android:textSize="24sp"/>
+                <RadioButton
+                    android:id="@+id/radiobutton_joystick_location_center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="중"
+                    android:textSize="24sp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
+                <RadioButton
+                    android:id="@+id/radiobutton_joystick_location_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="우"
+                    android:textSize="24sp"/>
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_player_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="캐릭터 속도"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/radiogroup_joystick_location"
+                android:layout_marginTop="50dp"/>
+            <LinearLayout
+                android:id="@+id/layout_player_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/tv_player_speed">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="slow"
+                    android:textSize="20sp"/>
+                <android.support.v7.widget.AppCompatSeekBar
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:max="10"
+                    android:progress="5"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
+                </android.support.v7.widget.AppCompatSeekBar>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="fast"
+                    android:textSize="20sp"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/border_layout"
+                android:layout_below="@id/layout_player_speed"
+                android:layout_margin="50dp">
+
+                <TextView
+                    android:id="@+id/tv_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="닉네임 입력"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"/>
+                <EditText
+                    android:id="@+id/et_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="사용할 닉네임을 입력하세요."
+                    android:textSize="24sp"
+                    android:layout_below="@id/tv_nickname"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="최소 8byte"
+                    android:textColor="@color/colorGray"
+                    android:layout_below="@id/et_nickname"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="8dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0/20 byte"
+                    android:textColor="@color/colorGray"
+                    android:layout_below="@id/et_nickname"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="8dp"/>
+                <Button
+                    android:id="@+id/btn_nickname_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="중복확인"
+                    android:textSize="24sp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="16dp"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_connect_http"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/connect_http"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlue"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/layout_nickname"/>
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+</LinearLayout>

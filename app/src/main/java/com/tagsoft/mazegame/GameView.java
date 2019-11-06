@@ -9,13 +9,12 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.HorizontalScrollView;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
-public class GameView extends HorizontalScrollView {
+public class GameView extends View {
 
     public enum Direction{
         UP, DOWN, LEFT, RIGHT
@@ -52,30 +51,30 @@ public class GameView extends HorizontalScrollView {
 
         //Left neighbour
         if(cell.col > 0){
-            if(!cells[cell.col-1][cell.row].visited){
+            if(!cells[cell.col-1][cell.row].visited){   //왼쪽으로 안가봤으면
                 neighbours.add(cells[cell.col-1][cell.row]);
             }
         }
         //right neighbour
         if(cell.col < COLS-1){
-            if(!cells[cell.col+1][cell.row].visited){
+            if(!cells[cell.col+1][cell.row].visited){   //오른쪽으로 안가봤으면
                 neighbours.add(cells[cell.col+1][cell.row]);
             }
         }
         //top neighbour
         if(cell.row > 0){
-            if(!cells[cell.col][cell.row-1].visited){
+            if(!cells[cell.col][cell.row-1].visited){   //위로 안가봤으면
                 neighbours.add(cells[cell.col][cell.row-1]);
             }
         }
         //bottom neighbour
         if(cell.row < ROWS-1){
-            if(!cells[cell.col][cell.row+1].visited){
+            if(!cells[cell.col][cell.row+1].visited){   //아래로 안가봤으면
                 neighbours.add(cells[cell.col][cell.row+1]);
             }
         }
 
-        if(neighbours.size()>0){
+        if(neighbours.size()>0){    //갈 수 있는 곳이 있으면
             int index = random.nextInt(neighbours.size());
             return neighbours.get(index);
         }
@@ -163,7 +162,7 @@ public class GameView extends HorizontalScrollView {
         }
 
         checkExit();
-        invalidate();
+        invalidate();   //강제로 onDraw()
 
     }
 
@@ -223,7 +222,6 @@ public class GameView extends HorizontalScrollView {
 
         cellSize = 100f;
 
-
         hMargin = cellSize/2;
         vMargin = cellSize/2;
 
@@ -264,24 +262,20 @@ public class GameView extends HorizontalScrollView {
                             wallPaint );
                 }
             }
-
-            float margin = cellSize/10;
-
-            canvas.drawRect(
-                    player.col*cellSize+margin,
-                    player.row*cellSize+margin,
-                    (player.col+1)*cellSize-margin,
-                    (player.row+1)*cellSize-margin,
-                    playerPaint);
-
-            canvas.drawRect(
-                    exit.col*cellSize+margin,
-                    exit.row*cellSize+margin,
-                    (exit.col+1)*cellSize-margin,
-                    (exit.row+1)*cellSize-margin,
-                    exitPaint);
-
         }
+
+        canvas.drawCircle(
+                (player.col+0.5f)*cellSize,
+                (player.row+0.5f)*cellSize,
+                cellSize/2,
+                playerPaint);
+
+        canvas.drawCircle(
+                (exit.col+0.5f)*cellSize,
+                (exit.row+0.5f)*cellSize,
+                cellSize/2,
+                exitPaint);
+
     }
 
     @Override

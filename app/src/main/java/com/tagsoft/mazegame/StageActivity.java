@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.HorizontalScrollView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 public class StageActivity extends AppCompatActivity {
@@ -13,7 +14,7 @@ public class StageActivity extends AppCompatActivity {
 
     ScrollView verticalScroll;
     HorizontalScrollView horizontalScroll;
-    GameView gameView;
+    Board board;
     JoystickView joystick;
 
     @Override
@@ -27,8 +28,11 @@ public class StageActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("stage "+stage);
 
         verticalScroll = findViewById(R.id.vertical_scroll);
+        verticalScroll.setSmoothScrollingEnabled(true);
         horizontalScroll = findViewById(R.id.horizontal_scroll);
-        gameView = findViewById(R.id.gameview);
+        horizontalScroll.setSmoothScrollingEnabled(true);
+        board = new Board(this, stage);
+        horizontalScroll.addView(board);
         joystick = findViewById(R.id.joystick);
         joystick.setBackgroundColor(R.drawable.joystick_background);
         joystick.setOnMoveListener(moveListener);
@@ -39,23 +43,23 @@ public class StageActivity extends AppCompatActivity {
         public void onMove(int angle, int strength) {
             if (strength > 80) {
                 if (angle <= 45 || angle > 315) {
-                    gameView.movePlayer(GameView.Direction.RIGHT);
+                    board.movePlayer(Board.Direction.RIGHT);
                 } else if (angle <= 135 && angle > 45) {
-                    gameView.movePlayer(GameView.Direction.UP);
+                    board.movePlayer(Board.Direction.UP);
                 } else if (angle <= 225 && angle > 135) {
-                    gameView.movePlayer(GameView.Direction.LEFT);
+                    board.movePlayer(Board.Direction.LEFT);
                 } else if (angle <= 315 && angle > 225) {
-                    gameView.movePlayer(GameView.Direction.DOWN);
+                    board.movePlayer(Board.Direction.DOWN);
                 }
             }else if(strength>0 && strength<=80){
                 if (angle <= 45 || angle > 315) {
-                    gameView.movePlayer(GameView.Direction.RIGHT);
+                    board.movePlayer(Board.Direction.RIGHT);
                 } else if (angle <= 135 && angle > 45) {
-                    gameView.movePlayer(GameView.Direction.UP);
+                    board.movePlayer(Board.Direction.UP);
                 } else if (angle <= 225 && angle > 135) {
-                    gameView.movePlayer(GameView.Direction.LEFT);
+                    board.movePlayer(Board.Direction.LEFT);
                 } else if (angle <= 315 && angle > 225) {
-                    gameView.movePlayer(GameView.Direction.DOWN);
+                    board.movePlayer(Board.Direction.DOWN);
                 }
                 try {
                     Thread.sleep(50);
@@ -64,8 +68,8 @@ public class StageActivity extends AppCompatActivity {
                 }
             }
 
-            verticalScroll.scrollTo((gameView.player.col - 5) * 100, (gameView.player.row - 5) * 100);
-            horizontalScroll.scrollTo((gameView.player.col - 5) * 100, (gameView.player.row - 5) * 100);
+            verticalScroll.scrollTo((board.player.getColumn() - 5) * 100, (board.player.getRow() - 5) * 100);
+            horizontalScroll.scrollTo((board.player.getColumn() - 5) * 100, (board.player.getRow() - 5) * 100);
 
             return;
 

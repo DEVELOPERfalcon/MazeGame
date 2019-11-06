@@ -18,6 +18,8 @@ public class Cell {
         this.leftWall = leftWall;
         this.rightWall = rightWall;
         this.bottomWall = bottomWall;
+        this.column = column;
+        this.row = row;
     }
 
     public void setTopWall(boolean wall){

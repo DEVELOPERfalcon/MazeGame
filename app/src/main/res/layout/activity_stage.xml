@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffff00"
+    android:id="@+id/root_layout"
     tools:context=".StageActivity">
 
     <ScrollView
@@ -18,11 +19,11 @@
             android:id="@+id/horizontal_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <com.tagsoft.mazegame.GameView
-                android:id="@+id/gameview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </com.tagsoft.mazegame.GameView>
+<!--            <com.tagsoft.mazegame.Board-->
+<!--                android:id="@+id/board"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+<!--            </com.tagsoft.mazegame.Board>-->
         </HorizontalScrollView>
     </ScrollView>
 
