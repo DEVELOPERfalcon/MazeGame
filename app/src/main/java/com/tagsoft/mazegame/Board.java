@@ -17,35 +17,57 @@ public class Board extends View {
 
     public Cell player, exit;
 
-    private static final int COLS = 20, ROWS = 20;
+    private static final int COLS = 22, ROWS = 20;
     private static final float WALL_THICKNESS = 4;
     private  float cellSize, hMargin, vMargin;
     private Paint wallPaint, playerPaint, exitPaint;
-    private Cell[][] cells = new Cell[COLS][ROWS];
+    private Cell[][] cells = new Cell[ROWS][COLS];
 
     int stage;
 
     private int[][] stage1 = {
-            {8, 82, 82, 82, 82, 82, 86, 84, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 86},
-            {46, 84, 82, 8, 82, 862, 46, 42, 86, 84, 82, 82, 86, 84, 82, 82, 82, 82, 86, 46},
-            {46, 46, 84, 62, 842, 86, 42, 82, 6, 42, 86, 84, 6, 46, 84, 86, 84, 86, 46, 46},
-            {46, 462, 42, 82, 86, 46, 84, 86, 46, 84, 62, 46, 462, 42, 62, 46, 46, 46, 46, 46},
-            {42, 82, 86, 84, 62, 46, 46, 42, 62, 42, 86, 42, 86, 84, 82, 62, 46, 42, 2, 62},
-            {84, 86, 42, 6, 84, 62, 42, 82, 82, 86, 42, 86, 42, 62, 84, 82, 62, 842, 82, 86},
-            {46, 42, 86, 46, 42, 86, 842, 8, 862, 42, 86, 46, 84, 86, 46, 842, 82, 86, 84, 6},
-            {42, 86, 46, 42, 86, 42, 86, 42, 82, 86, 46, 46, 46, 46, 42, 82, 86, 46, 46, 46},
-            {84, 62, 42, 86, 46, 846, 42, 82, 86, 46, 46, 46, 46, 42, 82, 86, 46, 4, 62, 46},
-            {42, 86, 84, 62, 46, 42, 82, 86, 46, 42, 62, 46, 42, 8, 86, 46, 46, 42, 86, 46},
-            {84, 62, 42, 82, 62, 84, 82, 62, 42, 82, 86, 42, 86, 46, 46, 46, 42, 82, 62, 46},
-            {42, 8, 82, 82, 86, 4, 82, 86, 84, 86, 4, 862, 42, 6, 46, 42, 82, 82, 862, 46},
-            {84, 62, 84, 86, 46, 462, 84, 62, 46, 42, 6, 84, 86, 46, 46, 84, 82, 82, 82, 62},
-            {46, 84, 62, 46, 46, 846, 42, 82, 62, 846, 46, 46, 42, 6, 46, 42, 82, 82, 82, 86},
-            {46, 42, 86, 46, 42, 62, 84, 82, 86, 46, 46, 42, 86, 462, 42, 8, 86, 84, 86, 46},
-            {46, 846, 46, 4, 82, 82, 2, 862, 42, 62, 42, 86, 42, 8, 86, 462, 42, 62, 46, 46},
-            {46, 4, 62, 42, 86, 84, 8, 82, 86, 84, 82, 62, 84, 62, 46, 84, 86, 84, 62, 46},
-            {46, 46, 842, 82, 62, 46, 46, 84, 62, 42, 86, 846, 46, 846, 42, 62, 46, 46, 842, 62},
-            {46, 42, 82, 82, 82, 62, 46, 46, 84, 86, 46, 46, 46, 42, 82, 86, 46, 462, 84, 86},
-            {42, 82, 82, 82, 82, 82, 62, 42, 62, 42, 62, 42, 2, 82, 82, 62, 42, 82, 62, 42}
+            {0,  8,  82,  82, 82,  82,  82,  86,  84,  82,  82, 82,  82,  82,  82, 82,  82, 82,  82,  82, 86, 4},
+            {6, 46,  84,  82,  8,  82, 862,  46,  42,  86,  84, 82,  82,  86,  84, 82,  82, 82,  82,  86, 46, 4},
+            {6, 46,  46,  84, 62, 842,  86,  42,  82,   6,  42, 86,  84,   6,  46, 84,  86, 84,  86,  46, 46, 4},
+            {6, 46, 462,  42, 82,  86,  46,  84,  86,  46,  84, 62,  46, 462,  42, 62,  46, 46,  46,  46, 46, 4},
+            {6, 42,  82,  86, 84,  62,  46,  46,  42,  62,  42, 86,  42,  86,  84, 82,  62, 46,  42,   2, 62, 4},
+            {6, 84,  86,  42,  6,  84,  62,  42,  82,  82,  86, 42,  86,  42,  62, 84,  82, 62, 842,  82, 86, 4},
+            {6, 46,  42,  86, 46,  42,  86, 842,   8, 862,  42, 86,  46,  84,  86, 46, 842, 82,  86,  84,  6, 4},
+            {6, 42,  86,  46, 42,  86,  42,  86,  42,  82,  86, 46,  46,  46,  46, 42,  82, 86,  46,  46, 46, 4},
+            {6, 84,  62,  42, 86,  46, 846,  42,  82,  86,  46, 46,  46,  46,  42, 82,  86, 46,   4,  62, 46, 4},
+            {6, 42,  86,  84, 62,  46,  42,  82,  86,  46,  42, 62,  46,  42,   8, 86,  46, 46,  42,  86, 46, 4},
+            {6, 84,  62,  42, 82,  62,  84,  82,  62,  42,  82, 86,  42,  86,  46, 46,  46, 42,  82,  62, 46, 4},
+            {6, 42,   8,  82, 82,  86,   4,  82,  86,  84,  86,  4, 862,  42,   6, 46,  42, 82,  82, 862, 46, 4},
+            {6, 84,  62,  84, 86,  46, 462,  84,  62,  46,  42,  6,  84,  86,  46, 46,  84, 82,  82,  82, 62, 4},
+            {6, 46,  84,  62, 46,  46, 846,  42,  82,  62, 846, 46,  46,  42,   6, 46,  42, 82,  82,  82, 86, 4},
+            {6, 46,  42,  86, 46,  42,  62,  84,  82,  86,  46, 46,  42,  86, 462, 42,   8, 86,  84,  86, 46, 4},
+            {6, 46, 846,  46,  4,  82,  82,   2, 862,  42,  62, 42,  86,  42,   8, 86, 462, 42,  62,  46, 46, 4},
+            {6, 46,   4,  62, 42,  86,  84,   8,  82,  86,  84, 82,  62,  84,  62, 46,  84, 86,  84,  62, 46, 4},
+            {6, 46,  46, 842, 82,  62,  46,  46,  84,  62,  42, 86, 846,  46, 846, 42,  62, 46,  46, 842, 62, 4},
+            {6, 46,  42,  82, 82,  82,  62,  46,  46,  84,  86, 46,  46,  46,  42, 82,  86, 46, 462,  84, 86, 4},
+            {6, 42,  82,  82, 82,  82,  82,  62,  42,  62,  42, 62,  42,   2,  82, 82,  62, 42,  82,  62, 42, 0}
+    };
+    private int[][] stage2 = {
+            {8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 86},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  6},
+            {42, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}
     };
 
     public Board(Context context, final int stage) {
@@ -58,9 +80,6 @@ public class Board extends View {
         playerPaint = new Paint();
         playerPaint.setColor(Color.RED);
 
-        exitPaint = new Paint();
-        exitPaint.setColor(Color.BLUE);
-
         this.stage = stage;
 
         Thread thread = new Thread(){
@@ -69,6 +88,9 @@ public class Board extends View {
                 switch (stage){
                     case 1:
                         makeMaze(stage1);
+                        break;
+                    case 2:
+                        makeMaze(stage2);
                         break;
                 }
                 invalidate();
@@ -110,30 +132,30 @@ public class Board extends View {
         }
 
         player = cells[0][0];
-        exit = cells[COLS-1][ROWS-1];
+        exit = cells[ROWS-1][COLS-1];
 
     }
 
     public void movePlayer(Direction direction){
         switch (direction){
             case UP:
-                if(!player.getTopWall()) {
-                    player = cells[player.getColumn()][player.getRow()-1];
+                if(!player.getTopWall() && player.getRow()>0 && player.getColumn()!=(COLS-1)) {
+                    player = cells[player.getRow()-1][player.getColumn()];
                 }
                 break;
             case DOWN:
-                if(!player.getBottomWall()) {
-                    player = cells[player.getColumn()][player.getRow()+1];
+                if(!player.getBottomWall() && player.getRow()<(ROWS-1) && player.getColumn()!=0) {
+                    player = cells[player.getRow()+1][player.getColumn()];
                 }
                 break;
             case LEFT:
-                if(!player.getLeftWall()) {
-                    player = cells[player.getColumn()-1][player.getRow()];
+                if(!player.getLeftWall() && player.getColumn()>1) {
+                    player = cells[player.getRow()][player.getColumn()-1];
                 }
                 break;
             case RIGHT:
-                if(!player.getRightWall()) {
-                    player = cells[player.getColumn()+1][player.getRow()];
+                if(!player.getRightWall() && player.getColumn()<(COLS-1)) {
+                    player = cells[player.getRow()][player.getColumn()+1];
                 }
                 break;
         }
@@ -162,38 +184,38 @@ public class Board extends View {
         for(int x = 0; x<ROWS; x++){
             for(int y = 0; y<COLS; y++){
 
-                //if(cells[x][y] == null) return;
+                if(cells[x][y] == null) return;
 
                 if(cells[x][y].getTopWall()){
                     canvas.drawLine(
+                            y*cellSize,
                             x*cellSize,
-                            y*cellSize,
-                            (x+1)*cellSize,
-                            y*cellSize,
+                            (y+1)*cellSize,
+                            x*cellSize,
                             wallPaint );
                 }
                 if(cells[x][y].getLeftWall()){
                     canvas.drawLine(
-                            x*cellSize,
                             y*cellSize,
                             x*cellSize,
-                            (y+1)*cellSize,
+                            y*cellSize,
+                            (x+1)*cellSize,
                             wallPaint );
                 }
                 if(cells[x][y].getRightWall()){
                     canvas.drawLine(
-                            (x+1)*cellSize,
-                            y*cellSize,
-                            (x+1)*cellSize,
                             (y+1)*cellSize,
+                            x*cellSize,
+                            (y+1)*cellSize,
+                            (x+1)*cellSize,
                             wallPaint );
                 }
                 if(cells[x][y].getBottomWall()){
                     canvas.drawLine(
-                            x*cellSize,
-                            (y+1)*cellSize,
+                            y*cellSize,
                             (x+1)*cellSize,
                             (y+1)*cellSize,
+                            (x+1)*cellSize,
                             wallPaint );
                 }
 
@@ -205,12 +227,6 @@ public class Board extends View {
                 (player.getRow()+0.5f)*cellSize,
                 cellSize/2,
                 playerPaint);
-
-        canvas.drawCircle(
-                (exit.getColumn()+0.5f)*cellSize,
-                (exit.getRow()+0.5f)*cellSize,
-                cellSize/2,
-                exitPaint);
 
     }
 
