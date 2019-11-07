@@ -160,16 +160,16 @@ public class Board extends View {
                 break;
         }
 
-        checkExit();
+        //checkExit();
         invalidate();
 
     }
 
-    private void checkExit(){
-        if(player == exit){
-            //다이얼로그
-        }
-    }
+//    private void checkExit(){
+//        if(player == exit){
+//            //다이얼로그
+//        }
+//    }
 
     @Override
     protected void onDraw(Canvas canvas) {

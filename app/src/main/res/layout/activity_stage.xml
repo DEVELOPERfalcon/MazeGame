@@ -8,22 +8,27 @@
     android:id="@+id/root_layout"
     tools:context=".StageActivity">
 
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"/>
+
     <ScrollView
         android:id="@+id/vertical_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/chronometer"
         android:layout_above="@id/joystick"
         android:layout_margin="16dp">
         <HorizontalScrollView
             android:id="@+id/horizontal_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-<!--            <com.tagsoft.mazegame.Board-->
-<!--                android:id="@+id/board"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent">-->
-<!--            </com.tagsoft.mazegame.Board>-->
+
         </HorizontalScrollView>
     </ScrollView>
 
