@@ -112,7 +112,7 @@ public class StageActivity extends AppCompatActivity {
             //Toast.makeText(this, "시간:"+time, Toast.LENGTH_SHORT).show();
             //다이얼로그
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(time);
+            builder.setMessage(time+"\n"+"별 갯수: "+board.getNumOfStar());
             builder.setPositiveButton("확인", dialogOnClickListener);
             AlertDialog dialog = builder.create();
             dialog.setCancelable(false);

@@ -8,4 +8,5 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorGray">#999999</color>
     <color name="colorBlue">#0000ff</color>
+    <color name="starColor">#FF9800</color>
 </resources>

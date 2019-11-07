@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -15,15 +17,22 @@ public class Board extends View {
         UP, DOWN, LEFT, RIGHT
     }
 
-    public Cell player, exit;
+    public Cell player, exit, star1, star2, star3;
 
     private static final int COLS = 22, ROWS = 20;
     private static final float WALL_THICKNESS = 4;
     private  float cellSize, hMargin, vMargin;
-    private Paint wallPaint, playerPaint, exitPaint;
+    private Paint wallPaint, playerPaint, star1Paint, star2Paint, star3Paint;
     private Cell[][] cells = new Cell[ROWS][COLS];
 
-    int stage;
+    Canvas canvas;
+
+    private int stage;
+    private int numOfStar;
+
+    private boolean drawStar1 = true;
+    private boolean drawStar2 = true;
+    private boolean drawStar3 = true;
 
     private int[][] stage1 = {
             {0,  8,  82,  82, 82,  82,  82,  86,  84,  82,  82, 82,  82,  82,  82, 82,  82, 82,  82,  82, 86, 4},
@@ -88,9 +97,11 @@ public class Board extends View {
                 switch (stage){
                     case 1:
                         makeMaze(stage1);
+                        setStars(stage);
                         break;
                     case 2:
                         makeMaze(stage2);
+                        setStars(stage);
                         break;
                 }
                 invalidate();
@@ -136,6 +147,16 @@ public class Board extends View {
 
     }
 
+    private void setStars(int stage){
+        switch (stage){
+            case 1:
+                star1 = cells[13][10];
+                star2 = cells[2][5];
+                star3 = cells[17][19];
+                break;
+        }
+    }
+
     public void movePlayer(Direction direction){
         switch (direction){
             case UP:
@@ -161,6 +182,7 @@ public class Board extends View {
         }
 
         //checkExit();
+        checkStar();
         invalidate();
 
     }
@@ -171,8 +193,22 @@ public class Board extends View {
 //        }
 //    }
 
+    private void checkStar(){
+        if(player == star1 && drawStar1){
+            drawStar1 = false;
+            numOfStar++;
+        }else if(player == star2 && drawStar2){
+            drawStar2 = false;
+            numOfStar++;
+        }else if(player == star3 && drawStar3){
+            drawStar3 = false;
+            numOfStar++;
+        }
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
+        this.canvas = canvas;
         canvas.drawColor(Color.WHITE);
 
         cellSize = 100f;
@@ -228,6 +264,55 @@ public class Board extends View {
                 cellSize/2,
                 playerPaint);
 
+        if(drawStar1) drawStar(star1);
+        if(drawStar2) drawStar(star2);
+        if(drawStar3) drawStar(star3);
+    }
+
+    private void drawStar(Cell star){
+        float mid = cellSize / 2;
+        float min = cellSize;
+        float fat = min / 17;
+        float half = min / 2;
+        float rad = half - fat;
+        mid = mid - half;
+
+        Paint paint = new Paint();
+        paint.setColor(getResources().getColor(R.color.starColor));
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.STROKE);
+
+        Path path = new Path();
+
+        if(star == star1) star1Paint = paint;
+        if(star == star2) star2Paint = paint;
+        if(star == star3) star3Paint = paint;
+
+        paint.setStrokeWidth(fat);
+        paint.setStyle(Paint.Style.STROKE);
+
+        canvas.drawCircle((star.getColumn()*cellSize)+mid + half, (star.getRow()*cellSize)+half, rad, paint);
+
+        path.reset();
+
+        paint.setStyle(Paint.Style.FILL);
+
+
+        // top left
+        path.moveTo((star.getColumn()*cellSize)+mid + half * 0.5f, (star.getRow()*cellSize)+half * 0.84f);
+        // top right
+        path.lineTo((star.getColumn()*cellSize)+mid + half * 1.5f, (star.getRow()*cellSize)+half * 0.84f);
+        // bottom left
+        path.lineTo((star.getColumn()*cellSize)+mid + half * 0.68f, (star.getRow()*cellSize)+half * 1.45f);
+        // top tip
+        path.lineTo((star.getColumn()*cellSize)+mid + half * 1.0f, (star.getRow()*cellSize)+half * 0.5f);
+        // bottom right
+        path.lineTo((star.getColumn()*cellSize)+mid + half * 1.32f, (star.getRow()*cellSize)+half * 1.45f);
+        // top left
+        path.lineTo((star.getColumn()*cellSize)+mid + half * 0.5f, (star.getRow()*cellSize)+half * 0.84f);
+
+        path.close();
+        canvas.drawPath(path, paint);
     }
 
     @Override
@@ -236,4 +321,11 @@ public class Board extends View {
         setMeasuredDimension(MeasureSpec.makeMeasureSpec(100*(COLS+1), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(100*(ROWS+1), MeasureSpec.EXACTLY));
     }
 
+    public int getNumOfStar() {
+        return numOfStar;
+    }
+
+    public void setNumOfStar(int numOfStar) {
+        this.numOfStar = numOfStar;
+    }
 }
