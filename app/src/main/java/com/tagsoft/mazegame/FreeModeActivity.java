@@ -50,12 +50,13 @@ public class FreeModeActivity extends AppCompatActivity {
         switch (requestCode){
             case 20:
                 if(resultCode == RESULT_OK){
-                    int rating = data.getIntExtra("rating", 0);
-                    String minute = data.getStringExtra("minute");
-                    String second = data.getStringExtra("second");
-                    datas.get(stage=1).setStarsNumber(rating);
-                    datas.get(stage=1).setMinute(minute);
-                    datas.get(stage=1).setSecond(second);
+                    int numOfStar = data.getIntExtra("numOfStar", 0);
+                    String time = data.getStringExtra("time");
+                    String[] timeArray = time.split(":");
+                    datas.get(stage-1).setStarsNumber(numOfStar);
+                    datas.get(stage-1).setMinute(timeArray[0]);
+                    datas.get(stage-1).setSecond(timeArray[1]);
+                    adapter.notifyDataSetChanged();
                 }
                 break;
         }

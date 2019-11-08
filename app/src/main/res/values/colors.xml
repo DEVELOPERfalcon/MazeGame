@@ -9,4 +9,6 @@
     <color name="colorGray">#999999</color>
     <color name="colorBlue">#0000ff</color>
     <color name="starColor">#FF9800</color>
+    <color name="duskYellow">#FFDAA520</color>
+    <color name="stageActivityBackground">#FFFFFF00</color>
 </resources>
