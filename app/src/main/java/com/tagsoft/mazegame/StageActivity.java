@@ -36,6 +36,8 @@ public class StageActivity extends AppCompatActivity {
     boolean startTimer = false;
     boolean finish = false;
 
+    AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,9 +132,8 @@ public class StageActivity extends AppCompatActivity {
             tvTime.setText("클리어 타임: "+time);    //텍스트뷰에 클리어 타임 넣기
             builder.setView(v); //빌더에 레이아웃 세팅
 
-            AlertDialog dialog = builder.create();  //디이얼로그 생성
+            dialog = builder.create();  //디이얼로그 생성
             dialog.setCancelable(false);    //뒤로가기로 다이얼로그 사라지게 못하기
-            dialog.setCanceledOnTouchOutside(false);    //바깥쪽 터치로 다이얼로그 사라지게 못하기
             dialog.show();  //다이얼로그 보여주기
         }
     }
@@ -165,5 +166,12 @@ public class StageActivity extends AppCompatActivity {
     public void clickRight(View view) {    //라이트키 클릭시 1칸 오른쪽으로 이동
         board.movePlayer(Board.Direction.RIGHT);
         workingAfterMove();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        dialog.dismiss();
     }
 }

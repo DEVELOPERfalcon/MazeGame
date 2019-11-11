@@ -14,7 +14,7 @@
         android:columnWidth="80dp"
         android:verticalSpacing="16dp"
         android:horizontalSpacing="4dp"
-        android:background="#FFEB3B"
+        android:background="@color/activityBackground"
         android:padding="16dp"/>
 
 </RelativeLayout>

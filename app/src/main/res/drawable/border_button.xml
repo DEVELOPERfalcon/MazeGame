@@ -9,7 +9,7 @@
         <shape android:shape="rectangle">
             <stroke android:width="2dp"
                 android:color="@color/colorBlack"/>
-            <solid android:color="@color/stageActivityBackground"/>
+            <solid android:color="@color/activityBackground"/>
         </shape>
     </item>
 

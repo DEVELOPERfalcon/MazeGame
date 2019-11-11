@@ -32,8 +32,8 @@
         android:numStars="3"
         android:rating="0"
         android:stepSize="1"
-        android:isIndicator="true"
         style="@style/Widget.AppCompat.RatingBar.Small"
+        android:isIndicator="true"
         android:layout_below="@id/border"
         android:layout_centerHorizontal="true"/>
 
