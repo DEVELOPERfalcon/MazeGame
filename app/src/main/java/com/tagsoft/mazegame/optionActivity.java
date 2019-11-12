@@ -1,6 +1,9 @@
 package com.tagsoft.mazegame;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +41,9 @@ public class optionActivity extends AppCompatActivity {
     TextView nickNameSize;
     Button nickNameCheck;
     RadioGroup joyStickLocation;
+    RadioButton leftButton;
+    RadioButton centerButton;
+    RadioButton rightButton;
     Button recordCheckButton;
     Button nickNameChange;
 
@@ -45,6 +52,10 @@ public class optionActivity extends AppCompatActivity {
     String nickname2;
 
     String query;
+
+    String dbName = "Data.db";
+    String tableName = "JoystickLocation";
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +68,28 @@ public class optionActivity extends AppCompatActivity {
         nickNameSize = findViewById(R.id.tv_nickname_size);
         nickNameCheck = findViewById(R.id.btn_nickname_check);
         joyStickLocation = findViewById(R.id.radiogroup_joystick_location);
+        leftButton = findViewById(R.id.radiobutton_joystick_location_left);
+        centerButton = findViewById(R.id.radiobutton_joystick_location_center);
+        rightButton = findViewById(R.id.radiobutton_joystick_location_right);
         recordCheckButton = findViewById(R.id.btn_connect_http);
         nickNameChange = findViewById(R.id.btn_nickname_change);
 
         inputNickName.addTextChangedListener(nickNameWatcher);
         nickNameCheck.setOnClickListener(nickNameCheckListener);
         nickNameChange.setOnClickListener(nickNameChangeListener);
+        joyStickLocation.setOnCheckedChangeListener(radioButtonChangeListener);
         recordCheckButton.setBackgroundColor(Color.TRANSPARENT);
 
-        loadNickName();
+        new Thread(){
+            @Override
+            public void run() {
+                db = openOrCreateDatabase(dbName, MODE_PRIVATE, null);
+                db.execSQL("CREATE TABLE IF NOT EXISTS "+tableName+" ('LEFT' boolena, 'CENTER' boolean, 'RIGHT' boolean)");
+
+                loadNickName();
+                loadJoystickLocation();
+            }
+        }.start();
 
    }
 
@@ -152,6 +176,7 @@ public class optionActivity extends AppCompatActivity {
 
     public void saveNickName(String nickname){
         try{
+            //닉네임을 내장메모리에 저장
             FileOutputStream fos = this.openFileOutput("NickName.txt", MODE_PRIVATE);
             PrintWriter writer = new PrintWriter(fos);
             writer.println(nickname);
@@ -171,10 +196,15 @@ public class optionActivity extends AppCompatActivity {
                 BufferedReader reader = new BufferedReader(isr);
                 String line = reader.readLine();
                 nickname = line;
-                inputNickName.setText(nickname);
-                nickNameCheck.setEnabled(false);
-                nickNameChange.setEnabled(true);
-                inputNickName.setEnabled(false);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        inputNickName.setText(nickname);
+                        nickNameCheck.setEnabled(false);
+                        nickNameChange.setEnabled(true);
+                        inputNickName.setEnabled(false);
+                    }
+                });
                 //Toast.makeText(this, "내장메모리 저장", Toast.LENGTH_SHORT).show();
             }else{
                 //Toast.makeText(this, "파일 없음", Toast.LENGTH_SHORT).show();
@@ -196,5 +226,38 @@ public class optionActivity extends AppCompatActivity {
             inputNickName.setEnabled(true);
         }
     };
+
+    RadioGroup.OnCheckedChangeListener radioButtonChangeListener = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup radioGroup, final int checkedId) {
+            new Thread(){
+                @Override
+                public void run() {
+                    if(checkedId == R.id.radiobutton_joystick_location_left) {
+                        db.execSQL("UPDATE "+tableName+" SET 'LEFT'=1, 'CENTER'=0, 'RIGHT'=0");
+                    }else if(checkedId == R.id.radiobutton_joystick_location_center) {
+                        db.execSQL("UPDATE "+tableName+" SET 'LEFT'=0, 'CENTER'=1, 'RIGHT'=0");
+                    }else if(checkedId == R.id.radiobutton_joystick_location_right) {
+                        db.execSQL("UPDATE "+tableName+" SET 'LEFT'=0, 'CENTER'=0, 'RIGHT'=1");
+                    }
+                }
+            }.start();
+        }
+    };
+
+    public void loadJoystickLocation(){
+        Cursor cursor = db.rawQuery("SELECT * FROM "+tableName, null);
+        if(cursor == null) return;
+        if(cursor.getCount() != 0){
+            while (cursor.moveToNext()){
+                if(cursor.getInt(0)>0) leftButton.setChecked(true);
+                else if(cursor.getInt(1)>0) centerButton.setChecked(true);
+                else if(cursor.getInt(2)>0) rightButton.setChecked(true);
+            }
+        }else {
+            db.execSQL("INSERT INTO "+tableName+" ('LEFT', 'CENTER', 'RIGHT') VALUES(0, 1, 0)");
+            centerButton.setChecked(true);
+        }
+    }
 
 }

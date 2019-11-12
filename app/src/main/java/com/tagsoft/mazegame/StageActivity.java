@@ -3,6 +3,8 @@ package com.tagsoft.mazegame;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+
 public class StageActivity extends AppCompatActivity {
 
     Intent intent;
@@ -32,6 +36,7 @@ public class StageActivity extends AppCompatActivity {
     Chronometer timer;
     Board board;
     JoystickView joystick;
+    RelativeLayout moveLayout;
 
     boolean startTimer = false;
     boolean finish = false;
@@ -58,6 +63,9 @@ public class StageActivity extends AppCompatActivity {
         joystick = findViewById(R.id.joystick);
         joystick.setBackgroundColor(R.drawable.joystick_background);
         joystick.setOnMoveListener(moveListener);
+        moveLayout = findViewById(R.id.layout_move);
+
+        loadJoystickLocation();
 
     }
 
@@ -172,6 +180,25 @@ public class StageActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        dialog.dismiss();
+        if(dialog != null) dialog.dismiss();
+    }
+
+    public void loadJoystickLocation(){
+        try{
+            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.tagsoft.mazegame/databases/Data.db", null, SQLiteDatabase.OPEN_READONLY);
+
+            Cursor cursor = db.rawQuery("SELECT * FROM JoystickLocation", null);
+            if(cursor == null) return;
+            if(cursor.getCount() != 0){
+                while (cursor.moveToNext()){
+                    if(cursor.getInt(0)>0) moveLayout.setGravity(Gravity.LEFT);
+                    else if(cursor.getInt(1)>0) moveLayout.setGravity(Gravity.CENTER);
+                    else if(cursor.getInt(2)>0) moveLayout.setGravity(Gravity.RIGHT);
+                }
+            }else{
+                moveLayout.setGravity(Gravity.CENTER);
+            }
+        }catch (Exception e){moveLayout.setGravity(Gravity.CENTER);}
+
     }
 }

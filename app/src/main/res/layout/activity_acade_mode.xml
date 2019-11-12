@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_above="@id/key_up"
+        android:layout_above="@id/layout_move"
         android:layout_margin="16dp">
         <HorizontalScrollView
             android:id="@+id/horizontal_scroll"
@@ -26,52 +26,62 @@
         </HorizontalScrollView>
     </ScrollView>
 
-    <ImageButton
-        android:id="@+id/key_up"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_keyboard_up_foreground"
-        android:layout_above="@id/joystick"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/border_button"
-        android:onClick="clickUp" />
+    <RelativeLayout
+        android:id="@+id/layout_move"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true">
 
-    <com.tagsoft.mazegame.JoystickView
-        android:id="@+id/joystick"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_above="@id/key_down"
-        android:layout_centerHorizontal="true"/>
+        <ImageButton
+            android:id="@+id/key_up"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_keyboard_up_foreground"
+            android:layout_above="@id/joystick"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/border_button"
+            android:onClick="clickUp" />
 
-    <ImageButton
-        android:id="@+id/key_down"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_keyboard_down_foreground"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/border_button"
-        android:onClick="clickDown"/>
+        <com.tagsoft.mazegame.JoystickView
+            android:id="@+id/joystick"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_above="@id/key_down"
+            android:layout_alignLeft="@id/key_down"/>
 
-    <ImageButton
-        android:id="@+id/key_left"
-        android:layout_width="50dp"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_keyboard_left_foreground"
-        android:layout_toLeftOf="@id/joystick"
-        android:layout_alignBottom="@id/joystick"
-        android:background="@drawable/border_button"
-        android:onClick="clickLeft"/>
+        <ImageButton
+            android:id="@+id/key_down"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_keyboard_down_foreground"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/border_button"
+            android:onClick="clickDown"/>
 
-    <ImageButton
-        android:id="@+id/key_right"
-        android:layout_width="50dp"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_keyboard_right_foreground"
-        android:layout_toRightOf="@id/joystick"
-        android:layout_alignBottom="@id/joystick"
-        android:background="@drawable/border_button"
-        android:onClick="clickRight"/>
+        <ImageButton
+            android:id="@+id/key_left"
+            android:layout_width="50dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_keyboard_left_foreground"
+            android:layout_toLeftOf="@id/joystick"
+            android:layout_alignBottom="@id/joystick"
+            android:background="@drawable/border_button"
+            android:onClick="clickLeft"/>
+
+        <ImageButton
+            android:id="@+id/key_right"
+            android:layout_width="50dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_keyboard_right_foreground"
+            android:layout_toRightOf="@id/joystick"
+            android:layout_alignBottom="@id/joystick"
+            android:background="@drawable/border_button"
+            android:onClick="clickRight"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>
 

@@ -1,11 +1,15 @@
 package com.tagsoft.mazegame;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.HorizontalScrollView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -15,6 +19,7 @@ public class AcadeModeActivity extends AppCompatActivity {
     HorizontalScrollView horizontalScroll;
     GameView gameView;
     JoystickView joystick;
+    RelativeLayout moveLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,9 @@ public class AcadeModeActivity extends AppCompatActivity {
         joystick = findViewById(R.id.joystick);
         joystick.setBackgroundColor(Color.GRAY);
         joystick.setOnMoveListener(moveListener);
+        moveLayout = findViewById(R.id.layout_move);
+
+        loadJoystickLocation();
     }
 
     JoystickView.OnMoveListener moveListener = new JoystickView.OnMoveListener() {
@@ -74,5 +82,24 @@ public class AcadeModeActivity extends AppCompatActivity {
     public void clickRight(View view) {    //라이트키 클릭시 1칸 오른쪽으로 이동
         gameView.movePlayer(GameView.Direction.RIGHT);
         workingAfterMove();
+    }
+
+    public void loadJoystickLocation(){
+        try{
+            SQLiteDatabase db = SQLiteDatabase.openDatabase("/data/data/com.tagsoft.mazegame/databases/Data.db", null, SQLiteDatabase.OPEN_READONLY);
+
+            Cursor cursor = db.rawQuery("SELECT * FROM JoystickLocation", null);
+            if(cursor == null) return;
+            if(cursor.getCount() != 0){
+                while (cursor.moveToNext()){
+                    if(cursor.getInt(0)>0) moveLayout.setGravity(Gravity.LEFT);
+                    else if(cursor.getInt(1)>0) moveLayout.setGravity(Gravity.CENTER);
+                    else if(cursor.getInt(2)>0) moveLayout.setGravity(Gravity.RIGHT);
+                }
+            }else{
+                moveLayout.setGravity(Gravity.CENTER);
+            }
+        }catch (Exception e){moveLayout.setGravity(Gravity.CENTER);}
+
     }
 }
