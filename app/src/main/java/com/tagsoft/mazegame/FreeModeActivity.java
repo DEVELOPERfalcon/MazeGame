@@ -1,5 +1,6 @@
 package com.tagsoft.mazegame;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,9 +8,24 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class FreeModeActivity extends AppCompatActivity {
@@ -25,6 +41,8 @@ public class FreeModeActivity extends AppCompatActivity {
     SQLiteDatabase db;
 
     String serverUrl;
+    String query;
+    String nickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +111,9 @@ public class FreeModeActivity extends AppCompatActivity {
                         public void run() {
                             db.execSQL("UPDATE "+starTable+" SET 'STAGE"+stage+"'="+datas.get(stage-1).getStarsNumber());
                             db.execSQL("UPDATE "+timeTable+" SET 'STAGE"+stage+"'='"+datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond()+"'");
+
+                            saveToMYSQL();
+
                         }
                     }.start();
                 }
@@ -137,11 +158,56 @@ public class FreeModeActivity extends AppCompatActivity {
             for(int i=0; i<100; i++){
                 if(i != 0) buffer.append(", ");
                 buffer.append("'00:00'");
-
                 datas.get(i).setMinute("00");
                 datas.get(i).setSecond("00");
             }
             db.execSQL("INSERT INTO "+timeTable+" VALUES("+buffer.toString()+")");
+        }
+    }
+
+    public void loadNickName(){
+        try {
+            File file = new File(getFilesDir(), "NickName.txt");
+            if(file.exists()){
+                FileInputStream fis = openFileInput("NickName.txt");
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader reader = new BufferedReader(isr);
+                String line = reader.readLine();
+                nickname = line;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveToMYSQL(){
+        serverUrl = "http://developer3.dothome.co.kr/MAZEescape/sendRecordPostType.php";
+        try{
+            URL url = new URL(serverUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+
+            loadNickName(); //내장메모리의 텍스트파일에서 닉네임 가져오기
+
+            String time = datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond();
+            query = "nickname="+nickname+"&stage="+stage+"&time="+time;
+            OutputStream os = connection.getOutputStream();
+            OutputStreamWriter writer = new OutputStreamWriter(os);
+            writer.write(query, 0, query.length());
+            writer.flush();
+            writer.close();
+
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
