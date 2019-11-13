@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">MazeGame</string>
-    <string name="connect_http"><u>각 스테이지별\n최고기록 확인하러 가기</u></string>
+    <string name="connect_http"><u>각 스테이지 유저별\n최고기록 확인하러 가기</u></string>
 </resources>

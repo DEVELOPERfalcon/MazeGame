@@ -6,6 +6,10 @@ public class ClearData {
     private String minute;
     private String second;
 
+    public ClearData(int stageNumber) {
+        this.stageNumber = stageNumber;
+    }
+
     public ClearData(int stageNumber, int starsNumber, String minute, String second) {
         this.stageNumber = stageNumber;
         this.starsNumber = starsNumber;
