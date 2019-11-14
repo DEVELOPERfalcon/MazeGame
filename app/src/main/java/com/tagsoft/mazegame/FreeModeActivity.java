@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -86,6 +87,7 @@ public class FreeModeActivity extends AppCompatActivity {
                 db.execSQL("CREATE TABLE IF NOT EXISTS "+timeTable+" ("+buffer.toString()+")");
                 db.execSQL("CREATE TABLE IF NOT EXISTS "+starTable+" ("+buffer2.toString()+")");
 
+                loadNickName(); //내장메모리의 텍스트파일에서 닉네임 가져오기
                 loadStageStarInfomation();
                 loadStageTimeInfomation();
             }
@@ -99,21 +101,47 @@ public class FreeModeActivity extends AppCompatActivity {
         switch (requestCode){
             case 20:
                 if(resultCode == RESULT_OK){
+                    //데이터 넘겨받기
                     int numOfStar = data.getIntExtra("numOfStar", 0);
                     String time = data.getStringExtra("time");
                     String[] timeArray = time.split(":");
+                    //기록 비교
+                    Cursor cursor = db.rawQuery("SELECT * FROM "+starTable, null);
+                    Cursor cursor2 = db.rawQuery("SELECT * FROM "+timeTable, null);
+                    if(cursor == null || cursor2 == null) return;
+                    while (cursor.moveToNext()){
+                        int record = cursor.getInt(stage-1);
+                        if(record>=numOfStar) numOfStar = record;
+                    }
+                    while (cursor2.moveToNext()){
+                        String record = cursor2.getString(stage-1);  //기록 가져오기
+                        String[] recordArray = record.split(":");   //분과 초 나누기
+                        if( !(recordArray[0].equals("00") && recordArray[1].equals("00")) ){  //저장된 기록이 초기값이 아니면 비교
+                            int currentMinute = Integer.parseInt(timeArray[0].toString());  //현재 minute
+                            int recordMinute = Integer.parseInt(recordArray[0].toString()); //기록 minute
+                            int curentSecond = Integer.parseInt(timeArray[1].toString());  //현재 second
+                            int recordSecond = Integer.parseInt(recordArray[1].toString()); //기록 minute
+                            if(currentMinute >= recordMinute){    //현재 minute가 기록 minute보다 크거나 같으면
+                                if(curentSecond >= recordSecond){    //현재 second가 기록 second보다 크거나 같으면
+                                    return;  //저장 하지 않도록 탈출
+                                }
+                            }
+                        }
+                    }
+                    //화면 갱신
                     datas.get(stage-1).setStarsNumber(numOfStar);
                     datas.get(stage-1).setMinute(timeArray[0]);
                     datas.get(stage-1).setSecond(timeArray[1]);
                     adapter.notifyDataSetChanged();
+                    //데이터 저장
                     new Thread(){
                         @Override
                         public void run() {
+                            //SQLite저장
                             db.execSQL("UPDATE "+starTable+" SET 'STAGE"+stage+"'="+datas.get(stage-1).getStarsNumber());
                             db.execSQL("UPDATE "+timeTable+" SET 'STAGE"+stage+"'='"+datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond()+"'");
-
+                            //MYSQL저장
                             saveToMYSQL();
-
                         }
                     }.start();
                 }
@@ -192,9 +220,7 @@ public class FreeModeActivity extends AppCompatActivity {
             connection.setDoOutput(true);
             connection.setUseCaches(false);
 
-            loadNickName(); //내장메모리의 텍스트파일에서 닉네임 가져오기
-
-            String time = datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond();
+            String time = "00:"+datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond();
             query = "nickname="+nickname+"&stage="+stage+"&time="+time;
             OutputStream os = connection.getOutputStream();
             OutputStreamWriter writer = new OutputStreamWriter(os);
@@ -202,6 +228,22 @@ public class FreeModeActivity extends AppCompatActivity {
             writer.flush();
             writer.close();
 
+            //echo결과 받기(작업 확인용)
+            InputStream is = connection.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader reader = new BufferedReader(isr);
+            final StringBuffer buffer = new StringBuffer();
+            String line = reader.readLine();
+            while(line != null){
+                buffer.append(line+"\n");
+                line = reader.readLine();
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(FreeModeActivity.this, buffer.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
         } catch (ProtocolException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
