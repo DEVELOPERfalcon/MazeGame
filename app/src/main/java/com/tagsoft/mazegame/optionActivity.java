@@ -1,10 +1,12 @@
 package com.tagsoft.mazegame;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -62,7 +64,7 @@ public class optionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
 
-        getSupportActionBar().setTitle("설정정");
+        getSupportActionBar().setTitle("설정");
 
         inputNickName = findViewById(R.id.et_nickname);
         nickNameSize = findViewById(R.id.tv_nickname_size);
@@ -79,6 +81,7 @@ public class optionActivity extends AppCompatActivity {
         nickNameChange.setOnClickListener(nickNameChangeListener);
         joyStickLocation.setOnCheckedChangeListener(radioButtonChangeListener);
         recordCheckButton.setBackgroundColor(Color.TRANSPARENT);
+        recordCheckButton.setOnClickListener(recordCheckListener);
 
         new Thread(){
             @Override
@@ -259,5 +262,13 @@ public class optionActivity extends AppCompatActivity {
             centerButton.setChecked(true);
         }
     }
+
+    View.OnClickListener recordCheckListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://developer3.dothome.co.kr/MAZEescape/index.html"));
+            startActivity(intent);
+        }
+    };
 
 }
