@@ -65,14 +65,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkNetworkConnectivity(){
-        int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
-        if(status == NetworkStatus.TYPE_MOBILE){
-            networkConnect = true;
-        }else if (status == NetworkStatus.TYPE_WIFI){
-            networkConnect = true;
-        }else {
-            networkConnect = false;
-        }
+        new Thread(){
+            @Override
+            public void run() {
+                int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
+                if(status == NetworkStatus.TYPE_MOBILE){
+                    networkConnect = true;
+                }else if (status == NetworkStatus.TYPE_WIFI){
+                    networkConnect = true;
+                }else {
+                    networkConnect = false;
+                }
+            }
+        }.start();
+
     }
 
     public void loadNickName(){
@@ -86,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         InputStreamReader isr = new InputStreamReader(fis);
                         BufferedReader reader = new BufferedReader(isr);
                         String line = reader.readLine();
-                        if(line.length()<8) nicknameExist=false;
+                        if(line.toString().getBytes().length<8) nicknameExist=false;
                         else nicknameExist = true;
                     }else nicknameExist=false;
                 } catch (FileNotFoundException e) {
@@ -115,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setMessage("Free Mode는 클리어시간을 업로드하기 위해\n\n" +
-                        "1. 인터넷 연결\n" +
-                        "2. 옵션(설정)에서 닉네임 저장\n\n" +
+                        "1. 인터넷 연결("+networkConnect+")\n" +
+                        "2. 옵션(설정)에서 닉네임 저장("+nicknameExist+")\n\n" +
                         "이 필요합니다.");
                 builder.setNeutralButton("확인", null);
                 builder.create().show();
