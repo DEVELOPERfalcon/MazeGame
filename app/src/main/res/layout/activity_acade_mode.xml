@@ -7,24 +7,38 @@
     android:background="@color/activityBackground"
     tools:context=".AcadeModeActivity">
 
-    <ScrollView
-        android:id="@+id/vertical_scroll"
+    <ua.org.tenletters.widget.DiagonalScrollView
+        android:id="@+id/diagonal_scroller"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_above="@id/layout_move"
         android:layout_margin="16dp">
-        <HorizontalScrollView
-            android:id="@+id/horizontal_scroll"
+        <com.tagsoft.mazegame.GameView
+            android:id="@+id/gameview"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <com.tagsoft.mazegame.GameView
-                android:id="@+id/gameview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </com.tagsoft.mazegame.GameView>
-        </HorizontalScrollView>
-    </ScrollView>
+        </com.tagsoft.mazegame.GameView>
+    </ua.org.tenletters.widget.DiagonalScrollView>
+
+<!--    <ScrollView-->
+<!--        android:id="@+id/vertical_scroll"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_above="@id/layout_move"-->
+<!--        android:layout_margin="16dp">-->
+<!--        <HorizontalScrollView-->
+<!--            android:id="@+id/horizontal_scroll"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+<!--            <com.tagsoft.mazegame.GameView-->
+<!--                android:id="@+id/gameview"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+<!--            </com.tagsoft.mazegame.GameView>-->
+<!--        </HorizontalScrollView>-->
+<!--    </ScrollView>-->
 
     <RelativeLayout
         android:id="@+id/layout_move"

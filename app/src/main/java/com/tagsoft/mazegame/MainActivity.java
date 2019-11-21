@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         InputStreamReader isr = new InputStreamReader(fis);
                         BufferedReader reader = new BufferedReader(isr);
                         String line = reader.readLine();
-                        if(line.toString().getBytes().length<8) nicknameExist=false;
+                        if(line.toString().getBytes().length<6) nicknameExist=false;
                         else nicknameExist = true;
                     }else nicknameExist=false;
                 } catch (FileNotFoundException e) {

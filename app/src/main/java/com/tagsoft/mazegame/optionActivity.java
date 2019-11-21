@@ -108,7 +108,7 @@ public class optionActivity extends AppCompatActivity {
 
        @Override
        public void afterTextChanged(Editable editable) {
-           if(editable.toString().getBytes().length >= 8){
+           if(editable.toString().getBytes().length >= 6){
                nickNameCheck.setEnabled(true);
            }else{
                nickNameCheck.setEnabled(false);
@@ -160,9 +160,9 @@ public class optionActivity extends AppCompatActivity {
                                     saveNickName(nickname);
                                     nickNameCheck.setEnabled(false);
                                     nickNameChange.setEnabled(true);
-                                    inputNickName.setEnabled(false);
                                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                                     imm.toggleSoftInput(0, 0);
+                                    inputNickName.setEnabled(false);
                                 }
                             }
                         });

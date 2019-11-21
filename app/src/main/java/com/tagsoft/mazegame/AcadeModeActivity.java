@@ -13,10 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import ua.org.tenletters.widget.DiagonalScrollView;
+
 public class AcadeModeActivity extends AppCompatActivity {
 
-    ScrollView verticalScroll;
-    HorizontalScrollView horizontalScroll;
+    DiagonalScrollView diagonalScrollView;
     GameView gameView;
     JoystickView joystick;
     RelativeLayout moveLayout;
@@ -26,8 +27,7 @@ public class AcadeModeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acade_mode);
 
-        verticalScroll = findViewById(R.id.vertical_scroll);
-        horizontalScroll = findViewById(R.id.horizontal_scroll);
+        diagonalScrollView = findViewById(R.id.diagonal_scroller);
         gameView = findViewById(R.id.gameview);
         joystick = findViewById(R.id.joystick);
         joystick.setBackgroundColor(Color.GRAY);
@@ -60,8 +60,7 @@ public class AcadeModeActivity extends AppCompatActivity {
     };
 
     public void workingAfterMove(){
-        verticalScroll.scrollTo((gameView.player.col - 5) * 100, (gameView.player.row - 5) * 100);
-        horizontalScroll.scrollTo((gameView.player.col - 5) * 100, (gameView.player.row - 5) * 100);
+        diagonalScrollView.scrollTo((gameView.player.col - 5) * 100, (gameView.player.row - 5) * 100);
     }
 
     public void clickUp(View view) {    //업키 클릭시 1칸 위로 이동

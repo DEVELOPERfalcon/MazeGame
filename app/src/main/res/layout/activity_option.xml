@@ -36,7 +36,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="최소 8byte"
+            android:text="최소 6byte"
             android:textColor="@color/colorGray"
             android:layout_below="@id/et_nickname"
             android:layout_alignParentLeft="true"

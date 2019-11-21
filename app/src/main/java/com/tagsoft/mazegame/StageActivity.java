@@ -25,14 +25,15 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import ua.org.tenletters.widget.DiagonalScrollView;
+
 public class StageActivity extends AppCompatActivity {
 
     Intent intent;
     int numOfStar;
     String time;
 
-    ScrollView verticalScroll;
-    HorizontalScrollView horizontalScroll;
+    DiagonalScrollView diagonalScrollView;
     Chronometer timer;
     Board board;
     JoystickView joystick;
@@ -54,12 +55,9 @@ public class StageActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("stage "+stage);
 
         timer = findViewById(R.id.chronometer);
-        verticalScroll = findViewById(R.id.vertical_scroll);
-        verticalScroll.setSmoothScrollingEnabled(true);
-        horizontalScroll = findViewById(R.id.horizontal_scroll);
-        horizontalScroll.setSmoothScrollingEnabled(true);
+        diagonalScrollView = findViewById(R.id.diagonal_scroller);
         board = new Board(this, stage);
-        horizontalScroll.addView(board);
+        diagonalScrollView.addView(board);
         joystick = findViewById(R.id.joystick);
         joystick.setBackgroundColor(R.drawable.joystick_background);
         joystick.setOnMoveListener(moveListener);
@@ -95,10 +93,7 @@ public class StageActivity extends AppCompatActivity {
         if(!startTimer && board.player.getColumn()==1 && board.player.getRow()==0){   //플레이어가 처음 이동을 시작하면
             timerOn();  //타이머 시작
         }
-
-        verticalScroll.scrollTo((board.player.getColumn() - 5) * 100, (board.player.getRow() - 5) * 100);   //수직스크롤 초점 이동
-        horizontalScroll.scrollTo((board.player.getColumn() - 5) * 100, (board.player.getRow() - 5) * 100);   //수평스크롤 초점 이동
-
+        diagonalScrollView.scrollTo((board.player.getColumn() - 5) * 100, (board.player.getRow() - 5) * 100);   //스크롤 초점 이동
         checkExit();       //골인 지점 도착 확인
     }
 
