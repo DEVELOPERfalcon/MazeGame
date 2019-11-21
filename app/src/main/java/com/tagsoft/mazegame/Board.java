@@ -48,12 +48,13 @@ public class Board extends View {
         playerPaint.setColor(Color.RED);
 
         this.stage = stage;
-        stages = new Stages(stage);
+        stages = new Stages(context, stage);
         stars = new Stars(stage);
 
         Thread thread = new Thread(){
             @Override
             public void run() {
+                while (!stages.isConstructorFinish()){}
                 makeMaze(stages.stage);
                 setStars(stars);
                 invalidate();
