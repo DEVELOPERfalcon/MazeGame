@@ -49,7 +49,7 @@ public class MyAdapter extends BaseAdapter {
 
         stageNumber.setText("stage "+clearData.getStageNumber());
         ratingBar.setRating((float)clearData.getStarsNumber());
-        clearTime.setText(clearData.getMinute()+":"+clearData.getSecond());
+        clearTime.setText(clearData.getHour()+":"+clearData.getMinute()+":"+clearData.getSecond());
 
         return view;
     }

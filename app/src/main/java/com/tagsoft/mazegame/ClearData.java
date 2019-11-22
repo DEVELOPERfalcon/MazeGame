@@ -3,6 +3,7 @@ package com.tagsoft.mazegame;
 public class ClearData {
     private int stageNumber;
     private int starsNumber;
+    private String hour;
     private String minute;
     private String second;
 
@@ -10,9 +11,10 @@ public class ClearData {
         this.stageNumber = stageNumber;
     }
 
-    public ClearData(int stageNumber, int starsNumber, String minute, String second) {
+    public ClearData(int stageNumber, int starsNumber, String hour, String minute, String second) {
         this.stageNumber = stageNumber;
         this.starsNumber = starsNumber;
+        this.hour = hour;
         this.minute = minute;
         this.second = second;
     }
@@ -31,6 +33,14 @@ public class ClearData {
 
     public void setStarsNumber(int starsNumber) {
         this.starsNumber = starsNumber;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
     }
 
     public String getMinute() {

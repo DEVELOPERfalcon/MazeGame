@@ -17,7 +17,7 @@
         <activity android:name=".optionActivity" />
         <activity android:name=".FreeModeActivity" />
         <activity
-            android:name=".AcadeModeActivity"
+            android:name=".ArcadeModeActivity"
             android:theme="@style/AppTheme.NoActionbar" />
         <activity
             android:name=".MainActivity"

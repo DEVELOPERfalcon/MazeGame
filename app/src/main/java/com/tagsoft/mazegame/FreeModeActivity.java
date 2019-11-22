@@ -116,22 +116,28 @@ public class FreeModeActivity extends AppCompatActivity {
                     while (cursor2.moveToNext()){
                         String record = cursor2.getString(stage-1);  //기록 가져오기
                         String[] recordArray = record.split(":");   //분과 초 나누기
-                        if( !(recordArray[0].equals("00") && recordArray[1].equals("00")) ){  //저장된 기록이 초기값이 아니면 비교
-                            int currentMinute = Integer.parseInt(timeArray[0].toString());  //현재 minute
-                            int recordMinute = Integer.parseInt(recordArray[0].toString()); //기록 minute
-                            int curentSecond = Integer.parseInt(timeArray[1].toString());  //현재 second
-                            int recordSecond = Integer.parseInt(recordArray[1].toString()); //기록 minute
-                            if(currentMinute >= recordMinute){    //현재 minute가 기록 minute보다 크거나 같으면
-                                if(curentSecond >= recordSecond){    //현재 second가 기록 second보다 크거나 같으면
-                                    return;  //저장 하지 않도록 탈출
+                        if( !(recordArray[0].equals("23") && recordArray[1].equals("59") && recordArray[2].equals("59")) ){  //저장된 기록이 초기값이 아니면 비교
+                            int currentHour = Integer.parseInt(timeArray[0].toString());  //현재 hour
+                            int recordHour = Integer.parseInt(recordArray[0].toString()); //기록 hour
+                            int currentMinute = Integer.parseInt(timeArray[1].toString());  //현재 minute
+                            int recordMinute = Integer.parseInt(recordArray[1].toString()); //기록 minute
+                            int curentSecond = Integer.parseInt(timeArray[2].toString());  //현재 second
+                            int recordSecond = Integer.parseInt(recordArray[2].toString()); //기록 minute
+                            if(currentHour >= recordHour){    //현재 hour가 기록 hour보다 크거나 같으면
+                                if(currentMinute >= recordMinute){    //현재 minute가 기록 minute보다 크거나 같으면
+                                    if(curentSecond >= recordSecond){    //현재 second가 기록 second보다 크거나 같으면
+                                        return;  //저장 하지 않도록 탈출
+                                    }
                                 }
                             }
+
                         }
                     }
                     //화면 갱신
                     datas.get(stage-1).setStarsNumber(numOfStar);
-                    datas.get(stage-1).setMinute(timeArray[0]);
-                    datas.get(stage-1).setSecond(timeArray[1]);
+                    datas.get(stage-1).setHour(timeArray[0]);
+                    datas.get(stage-1).setMinute(timeArray[1]);
+                    datas.get(stage-1).setSecond(timeArray[2]);
                     adapter.notifyDataSetChanged();
                     //데이터 저장
                     new Thread(){
@@ -139,7 +145,7 @@ public class FreeModeActivity extends AppCompatActivity {
                         public void run() {
                             //SQLite저장
                             db.execSQL("UPDATE "+starTable+" SET 'STAGE"+stage+"'="+datas.get(stage-1).getStarsNumber());
-                            db.execSQL("UPDATE "+timeTable+" SET 'STAGE"+stage+"'='"+datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond()+"'");
+                            db.execSQL("UPDATE "+timeTable+" SET 'STAGE"+stage+"'='"+datas.get(stage-1).getHour()+":"+datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond()+"'");
                             //MYSQL저장
                             saveToMYSQL();
                         }
@@ -177,17 +183,19 @@ public class FreeModeActivity extends AppCompatActivity {
             if(cursor.moveToNext()){
                 for(int i=0; i<100; i++){
                     String[] time = cursor.getString(i).split(":");
-                    datas.get(i).setMinute(time[0]);
-                    datas.get(i).setSecond(time[1]);
+                    datas.get(i).setHour(time[0]);
+                    datas.get(i).setMinute(time[1]);
+                    datas.get(i).setSecond(time[2]);
                 }
             }
         }else {
             StringBuffer buffer = new StringBuffer();
             for(int i=0; i<100; i++){
                 if(i != 0) buffer.append(", ");
-                buffer.append("'00:00'");
-                datas.get(i).setMinute("00");
-                datas.get(i).setSecond("00");
+                buffer.append("'23:59:59'");
+                datas.get(i).setHour("23");
+                datas.get(i).setMinute("59");
+                datas.get(i).setSecond("59");
             }
             db.execSQL("INSERT INTO "+timeTable+" VALUES("+buffer.toString()+")");
         }
@@ -220,7 +228,7 @@ public class FreeModeActivity extends AppCompatActivity {
             connection.setDoOutput(true);
             connection.setUseCaches(false);
 
-            String time = "00:"+datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond();
+            String time = datas.get(stage-1).getHour()+":"+datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond();
             query = "nickname="+nickname+"&stage="+stage+"&time="+time;
             OutputStream os = connection.getOutputStream();
             OutputStreamWriter writer = new OutputStreamWriter(os);

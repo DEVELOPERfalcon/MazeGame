@@ -55,6 +55,7 @@ public class StageActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("stage "+stage);
 
         timer = findViewById(R.id.chronometer);
+        timer.setText("00:00:00");
         diagonalScrollView = findViewById(R.id.diagonal_scroller);
         board = new Board(this, stage);
         diagonalScrollView.addView(board);
@@ -62,10 +63,25 @@ public class StageActivity extends AppCompatActivity {
         joystick.setBackgroundColor(R.drawable.joystick_background);
         joystick.setOnMoveListener(moveListener);
         moveLayout = findViewById(R.id.layout_move);
+        timer.setOnChronometerTickListener(chronometerListener);
 
         loadJoystickLocation();
 
     }
+
+    Chronometer.OnChronometerTickListener chronometerListener = new Chronometer.OnChronometerTickListener() {
+        @Override
+        public void onChronometerTick(Chronometer chronometer) {
+            long t = SystemClock.elapsedRealtime() - chronometer.getBase();
+            int h = (int)(t/3600000);
+            int m = (int)(t-h*3600000)/60000;
+            int s = (int)(t-h*3600000-m*60000)/1000;
+            String hh = h<10 ? "0"+h : h+"";
+            String mm = m<10 ? "0"+m : m+"";
+            String ss = s<10 ? "0"+s : s+"";
+            chronometer.setText(hh+":"+mm+":"+ss);
+        }
+    };
 
     JoystickView.OnMoveListener moveListener = new JoystickView.OnMoveListener() {  //조이스틱의 움직임을 주시하는 리스너
         @Override
