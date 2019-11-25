@@ -285,63 +285,63 @@ public class Stars {
                 star3Row=18;
                 star3Col=8;
                 break;
-                /*
             case 36:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=4;
+                star1Col=8;
+                star2Row=0;
+                star2Col=20;
+                star3Row=17;
+                star3Col=11;
                 break;
             case 37:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=8;
+                star1Col=1;
+                star2Row=0;
+                star2Col=20;
+                star3Row=19;
+                star3Col=1;
                 break;
             case 38:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=11;
+                star1Col=11;
+                star2Row=12;
+                star2Col=17;
+                star3Row=19;
+                star3Col=1;
                 break;
             case 39:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=2;
+                star1Col=1;
+                star2Row=1;
+                star2Col=8;
+                star3Row=18;
+                star3Col=20;
                 break;
             case 40:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=3;
+                star1Col=4;
+                star2Row=1;
+                star2Col=19;
+                star3Row=15;
+                star3Col=1;
                 break;
             case 41:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=11;
+                star1Col=12;
+                star2Row=13;
+                star2Col=18;
+                star3Row=19;
+                star3Col=1;
                 break;
             case 42:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=13;
+                star1Col=5;
+                star2Row=10;
+                star2Col=13;
+                star3Row=15;
+                star3Col=16;
                 break;
+                /*
             case 43:
                 star1Row=;
                 star1Col=;

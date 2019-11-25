@@ -35,6 +35,7 @@ public class FreeModeActivity extends AppCompatActivity {
     MyAdapter adapter;
     ArrayList<ClearData> datas = new ArrayList<>();
     int stage;
+    int totalStageNum = 100;
 
     String dbName = "Data.db";
     String timeTable = "stage";
@@ -54,7 +55,7 @@ public class FreeModeActivity extends AppCompatActivity {
 
         gridView = findViewById(R.id.gridview);
 
-        for(int i=0;i<100;i++){
+        for(int i=0;i<totalStageNum;i++){
             datas.add(new ClearData(i+1));
         }
 
@@ -76,7 +77,7 @@ public class FreeModeActivity extends AppCompatActivity {
                 db = openOrCreateDatabase(dbName, MODE_PRIVATE, null);
                 StringBuffer buffer = new StringBuffer();
                 StringBuffer buffer2 = new StringBuffer();
-                for(int i=0;i<100;i++){
+                for(int i=0;i<totalStageNum;i++){
                     if(i != 0) {
                         buffer.append(", ");
                         buffer2.append(", ");
@@ -160,13 +161,13 @@ public class FreeModeActivity extends AppCompatActivity {
         if(cursor == null) return;
         if(cursor.getCount() != 0){
             if(cursor.moveToNext()){
-                for(int i=0; i<100; i++){
+                for(int i=0; i<totalStageNum; i++){
                     datas.get(i).setStarsNumber(cursor.getInt(i));
                 }
             }
         }else {
             StringBuffer buffer = new StringBuffer();
-            for(int i=0; i<100; i++){
+            for(int i=0; i<totalStageNum; i++){
                 if(i != 0) buffer.append(", ");
                 buffer.append("0");
 
@@ -181,7 +182,7 @@ public class FreeModeActivity extends AppCompatActivity {
         if(cursor == null) return;
         if(cursor.getCount() != 0){
             if(cursor.moveToNext()){
-                for(int i=0; i<100; i++){
+                for(int i=0; i<totalStageNum; i++){
                     String[] time = cursor.getString(i).split(":");
                     datas.get(i).setHour(time[0]);
                     datas.get(i).setMinute(time[1]);
@@ -190,7 +191,7 @@ public class FreeModeActivity extends AppCompatActivity {
             }
         }else {
             StringBuffer buffer = new StringBuffer();
-            for(int i=0; i<100; i++){
+            for(int i=0; i<totalStageNum; i++){
                 if(i != 0) buffer.append(", ");
                 buffer.append("'23:59:59'");
                 datas.get(i).setHour("23");

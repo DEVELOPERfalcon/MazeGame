@@ -172,7 +172,7 @@ public class GameView extends View {
         }
     }
 
-    //    @Override
+//    @Override
 //    public boolean onTouchEvent(MotionEvent event) {
 //        if(event.getAction() == MotionEvent.ACTION_DOWN) return true;
 //
