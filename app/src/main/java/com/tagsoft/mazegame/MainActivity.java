@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener optionButtonListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, optionActivity.class);
+            Intent intent = new Intent(MainActivity.this, OptionActivity.class);
             startActivity(intent);
         }
     };

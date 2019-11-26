@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp">
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Input Nickname"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"/>
+    <EditText
+        android:id="@+id/et_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Please enter a nickname to use."
+        android:textSize="20sp"
+        android:inputType="text"
+        android:layout_below="@id/tv_nickname"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="minimum 6byte"
+        android:textColor="@color/colorGray"
+        android:layout_below="@id/et_nickname"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dp"/>
+    <TextView
+        android:id="@+id/tv_nickname_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0/20 byte"
+        android:textColor="@color/colorGray"
+        android:layout_below="@id/et_nickname"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"/>
+
+    <Button
+        android:id="@+id/btn_cencel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cencel"
+        android:textAllCaps="false"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_nickname_size"
+        android:layout_marginTop="16dp"/>
+    <Button
+        android:id="@+id/btn_nickname_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Overlap Check(Save)"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:layout_margin="16dp"
+        android:layout_below="@id/tv_nickname_size"
+        android:layout_toLeftOf="@id/btn_cencel"/>
+
+</RelativeLayout>

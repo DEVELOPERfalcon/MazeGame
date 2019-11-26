@@ -341,472 +341,70 @@ public class Stars {
                 star3Row=15;
                 star3Col=16;
                 break;
-                /*
             case 43:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=0;
+                star1Col=20;
+                star2Row=6;
+                star2Col=11;
+                star3Row=19;
+                star3Col=19;
                 break;
             case 44:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=2;
+                star1Col=15;
+                star2Row=11;
+                star2Col=8;
+                star3Row=19;
+                star3Col=4;
                 break;
             case 45:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=3;
+                star1Col=4;
+                star2Row=10;
+                star2Col=11;
+                star3Row=19;
+                star3Col=18;
                 break;
             case 46:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=0;
+                star1Col=15;
+                star2Row=18;
+                star2Col=3;
+                star3Row=19;
+                star3Col=6;
                 break;
             case 47:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=12;
+                star1Col=5;
+                star2Row=9;
+                star2Col=10;
+                star3Row=9;
+                star3Col=20;
                 break;
             case 48:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=8;
+                star1Col=8;
+                star2Row=15;
+                star2Col=13;
+                star3Row=15;
+                star3Col=18;
                 break;
             case 49:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=8;
+                star1Col=15;
+                star2Row=14;
+                star2Col=9;
+                star3Row=14;
+                star3Col=11;
                 break;
             case 50:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
+                star1Row=1;
+                star1Col=1;
+                star2Row=5;
+                star2Col=11;
+                star3Row=11;
+                star3Col=19;
                 break;
-            case 51:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 52:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 53:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 54:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 55:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 56:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 57:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 58:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 59:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 60:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 61:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 62:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 63:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 64:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 65:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 66:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 67:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 68:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 69:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 70:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 71:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 72:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 73:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 74:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 75:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 76:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 77:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 78:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 79:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 80:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 81:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 82:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 83:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 84:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 85:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 86:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 87:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 88:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 89:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 90:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 91:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 92:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 93:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 94:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 95:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 96:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 97:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 98:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 99:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-            case 100:
-                star1Row=;
-                star1Col=;
-                star2Row=;
-                star2Col=;
-                star3Row=;
-                star3Col=;
-                break;
-                */
         }
     }
 }

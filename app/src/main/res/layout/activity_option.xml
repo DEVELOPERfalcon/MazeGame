@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".optionActivity"
+    tools:context=".OptionActivity"
     android:background="@color/activityBackground"
     android:focusable="true"
     android:focusableInTouchMode="true">
@@ -12,70 +12,63 @@
     <RelativeLayout
         android:id="@+id/layout_nickname"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/border_layout"
         android:layout_alignParentTop="true"
-        android:layout_margin="50dp">
+        android:layout_margin="16dp">
 
         <TextView
-            android:id="@+id/tv_nickname"
+            android:id="@+id/tv_nickname_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="닉네임 입력"
+            android:text="Nickname"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_alignParentTop="true"/>
-        <EditText
-            android:id="@+id/et_nickname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="사용할 닉네임을 입력하세요."
-            android:textSize="24sp"
-            android:inputType="text"
-            android:layout_below="@id/tv_nickname"/>
-        <TextView
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="16dp"/>
+        <Button
+            android:id="@+id/btn_nickname_change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="최소 6byte"
-            android:textColor="@color/colorGray"
-            android:layout_below="@id/et_nickname"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="8dp"/>
-        <TextView
-            android:id="@+id/tv_nickname_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0/20 byte"
-            android:textColor="@color/colorGray"
-            android:layout_below="@id/et_nickname"
+            android:text="Input"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="8dp"/>
-        <LinearLayout
+            android:layout_below="@id/tv_nickname_title"
+            android:textAllCaps="false"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tv_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
+            android:textSize="24sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:background="@drawable/underline_text"
+            android:layout_below="@id/tv_nickname_title"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="16dp"
+            android:layout_toLeftOf="@id/btn_nickname_change"
+            android:layout_alignBaseline="@id/btn_nickname_change"/>
+
+        <TextView
+            android:id="@+id/tv_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Code: null"
+            android:layout_below="@id/tv_nickname"
+            android:layout_marginTop="50dp"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
+            android:id="@+id/btn_interlocking_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="nickname interlocking by Code"
+            android:layout_below="@id/tv_code"
             android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal">
-            <Button
-                android:id="@+id/btn_nickname_check"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="중복확인(저장)"
-                android:textSize="24sp"
-                android:enabled="false"
-                android:layout_margin="16dp"/>
-            <Button
-                android:id="@+id/btn_nickname_change"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="변경"
-                android:textSize="24sp"
-                android:enabled="false"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="16dp"/>
-        </LinearLayout>
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp"/>
 
     </RelativeLayout>
 
@@ -83,7 +76,7 @@
         android:id="@+id/tv_joystick_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="조이스틱 위치"
+        android:text="Joystick Location"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
@@ -102,13 +95,13 @@
             android:id="@+id/radiobutton_joystick_location_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="좌"
+            android:text="left"
             android:textSize="24sp"/>
         <RadioButton
             android:id="@+id/radiobutton_joystick_location_center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="중"
+            android:text="center"
             android:textSize="24sp"
             android:checked="true"
             android:layout_marginLeft="10dp"
@@ -117,7 +110,7 @@
             android:id="@+id/radiobutton_joystick_location_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="우"
+            android:text="right"
             android:textSize="24sp"/>
 
     </RadioGroup>
@@ -129,6 +122,7 @@
         android:text="@string/connect_http"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textAllCaps="false"
         android:textColor="@color/colorBlue"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"/>

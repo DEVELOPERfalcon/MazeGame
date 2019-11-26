@@ -35,7 +35,7 @@ public class FreeModeActivity extends AppCompatActivity {
     MyAdapter adapter;
     ArrayList<ClearData> datas = new ArrayList<>();
     int stage;
-    int totalStageNum = 100;
+    int totalStageNum = 51;
 
     String dbName = "Data.db";
     String timeTable = "stage";

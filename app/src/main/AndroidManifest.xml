@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".StageActivity"></activity>
-        <activity android:name=".optionActivity" />
+        <activity android:name=".OptionActivity" />
         <activity android:name=".FreeModeActivity" />
         <activity
             android:name=".ArcadeModeActivity"
