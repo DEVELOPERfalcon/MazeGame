@@ -8,7 +8,7 @@ public class ClearData {
     private String second;
 
     public ClearData(int stageNumber) {
-        this.stageNumber = stageNumber;
+        this(stageNumber, 0, "23", "59", "59");
     }
 
     public ClearData(int stageNumber, int starsNumber, String hour, String minute, String second) {

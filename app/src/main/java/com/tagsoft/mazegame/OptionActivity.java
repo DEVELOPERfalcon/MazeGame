@@ -93,7 +93,6 @@ public class OptionActivity extends AppCompatActivity {
        rightButton = findViewById(R.id.radiobutton_joystick_location_right);
        recordCheckButton = findViewById(R.id.btn_connect_http);
    }
-
    public void setListener(){
        nickNameChange.setOnClickListener(nickNameChangeListener);
        interlockButton.setOnClickListener(interlockListener);
@@ -109,30 +108,129 @@ public class OptionActivity extends AppCompatActivity {
                db.execSQL("CREATE TABLE IF NOT EXISTS "+tableName+" ('LEFT' boolena, 'CENTER' boolean, 'RIGHT' boolean)");
 
                loadNickName();
-               if(enteredNickName.getText().length() != 0) {
-                   runOnUiThread(new Runnable() {
-                       @Override
-                       public void run() {
-                           nickNameChange.setText("Change");
-                       }
-                   });
-               }
                loadJoystickLocation();
                loadCode();
            }
        }.start();
    }
 
+    public void loadNickName(){
+        try {
+            File file = new File(getFilesDir(), "NickName.txt");
+            if(file.exists()){
+                FileInputStream fis = openFileInput("NickName.txt");
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader reader = new BufferedReader(isr);
+                String line = reader.readLine();
+                nickname = line;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        enteredNickName.setText(nickname);
+                        nickNameChange.setText("Change");
+                    }
+                });
+                //Toast.makeText(this, "내장메모리 저장", Toast.LENGTH_SHORT).show();
+            }else{
+                //Toast.makeText(this, "파일 없음", Toast.LENGTH_SHORT).show();
+                createCode();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveNickName(String nickname){
+        try{
+            //닉네임을 내장메모리에 저장
+            FileOutputStream fos = this.openFileOutput("NickName.txt", MODE_PRIVATE);
+            PrintWriter writer = new PrintWriter(fos);
+            writer.println(nickname);
+            writer.flush();
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createCode(){
+        new Thread(){
+            @Override
+            public void run() {
+                Random random = new Random();
+                StringBuffer buffer = new StringBuffer();
+                for(int i=0;i<10;i++){
+                    if(i==0) buffer.append("M");
+                    else if(i==5) buffer.append("C");
+                    else buffer.append(random.nextInt(10));
+                }
+                code = buffer.toString();
+            }
+        }.start();
+    }
+
+    public void loadCode(){
+        try {
+            File file = new File(getFilesDir(), "Code.txt");
+            if(file.exists()){
+                FileInputStream fis = openFileInput("Code.txt");
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader reader = new BufferedReader(isr);
+                String line = reader.readLine();
+                code = line;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showCodeTextView.setText("Code: "+code);
+                    }
+                });
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveCode(String code){
+        try{
+            FileOutputStream fos = this.openFileOutput("Code.txt", MODE_PRIVATE);
+            PrintWriter writer = new PrintWriter(fos);
+            writer.println(code);
+            writer.flush();
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadJoystickLocation(){
+        Cursor cursor = db.rawQuery("SELECT * FROM "+tableName, null);
+        if(cursor == null) return;
+        if(cursor.getCount() != 0){
+            while (cursor.moveToNext()){
+                if(cursor.getInt(0)>0) leftButton.setChecked(true);
+                else if(cursor.getInt(1)>0) centerButton.setChecked(true);
+                else if(cursor.getInt(2)>0) rightButton.setChecked(true);
+            }
+        }else {
+            db.execSQL("INSERT INTO "+tableName+" ('LEFT', 'CENTER', 'RIGHT') VALUES(0, 1, 0)");
+            centerButton.setChecked(true);
+        }
+    }
+
+    /////////////////   Listener    //////////////////////
+
    TextWatcher nickNameWatcher = new TextWatcher() {
        @Override
        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
        }
-
        @Override
        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
            nickNameSize.setText(charSequence.toString().getBytes().length+"/20 byte");
        }
-
        @Override
        public void afterTextChanged(Editable editable) {
            if(editable.toString().getBytes().length >= 6){
@@ -153,7 +251,7 @@ public class OptionActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     nickname = inputNickName.getText().toString();
-                    String serverUrl = "http://developer3.dothome.co.kr/MAZEescape/sendPostType.php";
+                    String serverUrl = "http://developer3.dothome.co.kr/MAZEescape/saveNickname.php";
                     try {
                         URL url = new URL(serverUrl);
                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -185,12 +283,13 @@ public class OptionActivity extends AppCompatActivity {
                             public void run() {
                                 Toast.makeText(OptionActivity.this, buffer.toString(), Toast.LENGTH_SHORT).show();
                                 if(buffer.toString().equals("사용가능한 닉네임입니다.\n저장되었습니다.\n")){
-                                    saveNickName(nickname);
-                                    saveCode(code);
+                                    saveNickName(nickname); //내장메모리 저장
+                                    saveCode(code);         //내장메모리 저장
                                     showCodeTextView.setText("Code: "+code);
                                     enteredNickName.setText(nickname);
                                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                                     imm.toggleSoftInput(0, 0);
+                                    nickNameChange.setText("Change");
                                     dialog.dismiss();
                                 }
                             }
@@ -205,55 +304,6 @@ public class OptionActivity extends AppCompatActivity {
             }.start();
         }
     };
-
-    public void createCode(){
-        new Thread(){
-            @Override
-            public void run() {
-                Random random = new Random();
-                StringBuffer buffer = new StringBuffer();
-                for(int i=0;i<10;i++){
-                    if(i==0) buffer.append("M");
-                    else if(i==5) buffer.append("C");
-                    else buffer.append(random.nextInt(10));
-                }
-                code = buffer.toString();
-            }
-        }.start();
-    }
-    public void saveCode(String code){
-        try{
-            FileOutputStream fos = this.openFileOutput("Code.txt", MODE_PRIVATE);
-            PrintWriter writer = new PrintWriter(fos);
-            writer.println(code);
-            writer.flush();
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-    public void loadCode(){
-        try {
-            File file = new File(getFilesDir(), "Code.txt");
-            if(file.exists()){
-                FileInputStream fis = openFileInput("Code.txt");
-                InputStreamReader isr = new InputStreamReader(fis);
-                BufferedReader reader = new BufferedReader(isr);
-                String line = reader.readLine();
-                code = line;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showCodeTextView.setText("Code: "+code);
-                    }
-                });
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     View.OnClickListener cencelListener = new View.OnClickListener() {
         @Override
@@ -338,47 +388,6 @@ public class OptionActivity extends AppCompatActivity {
         }
     };
 
-    public void saveNickName(String nickname){
-        try{
-            //닉네임을 내장메모리에 저장
-            FileOutputStream fos = this.openFileOutput("NickName.txt", MODE_PRIVATE);
-            PrintWriter writer = new PrintWriter(fos);
-            writer.println(nickname);
-            writer.flush();
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void loadNickName(){
-        try {
-            File file = new File(getFilesDir(), "NickName.txt");
-            if(file.exists()){
-                FileInputStream fis = openFileInput("NickName.txt");
-                InputStreamReader isr = new InputStreamReader(fis);
-                BufferedReader reader = new BufferedReader(isr);
-                String line = reader.readLine();
-                nickname = line;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        enteredNickName.setText(nickname);
-                    }
-                });
-                //Toast.makeText(this, "내장메모리 저장", Toast.LENGTH_SHORT).show();
-            }else{
-                //Toast.makeText(this, "파일 없음", Toast.LENGTH_SHORT).show();
-                createCode();
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     View.OnClickListener nickNameChangeListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -392,8 +401,11 @@ public class OptionActivity extends AppCompatActivity {
             nickNameCheck = v.findViewById(R.id.btn_nickname_check);
             inputCencel = v.findViewById(R.id.btn_cencel);
 
-            if(nickname != null) inputNickName.setText(nickname);
-            nickNameSize.setText(nickname.getBytes().length+"/20 byte");
+            if(nickname != null) {
+                inputNickName.setText(nickname);
+                nickNameSize.setText(nickname.getBytes().length+"/20 byte");
+            }
+            nickNameCheck.setEnabled(false);
             inputNickName.addTextChangedListener(nickNameWatcher);
             nickNameCheck.setOnClickListener(nickNameCheckListener);
             inputCencel.setOnClickListener(cencelListener);
@@ -423,21 +435,6 @@ public class OptionActivity extends AppCompatActivity {
             }.start();
         }
     };
-
-    public void loadJoystickLocation(){
-        Cursor cursor = db.rawQuery("SELECT * FROM "+tableName, null);
-        if(cursor == null) return;
-        if(cursor.getCount() != 0){
-            while (cursor.moveToNext()){
-                if(cursor.getInt(0)>0) leftButton.setChecked(true);
-                else if(cursor.getInt(1)>0) centerButton.setChecked(true);
-                else if(cursor.getInt(2)>0) rightButton.setChecked(true);
-            }
-        }else {
-            db.execSQL("INSERT INTO "+tableName+" ('LEFT', 'CENTER', 'RIGHT') VALUES(0, 1, 0)");
-            centerButton.setChecked(true);
-        }
-    }
 
     View.OnClickListener recordCheckListener = new View.OnClickListener() {
         @Override

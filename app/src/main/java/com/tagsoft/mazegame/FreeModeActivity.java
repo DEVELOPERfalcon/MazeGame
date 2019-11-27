@@ -37,12 +37,6 @@ public class FreeModeActivity extends AppCompatActivity {
     int stage;
     int totalStageNum = 51;
 
-    String dbName = "Data.db";
-    String timeTable = "stage";
-    String starTable = "star";
-    SQLiteDatabase db;
-
-    String serverUrl;
     String query;
     String nickname;
 
@@ -71,137 +65,19 @@ public class FreeModeActivity extends AppCompatActivity {
             }
         });
 
+        loadingWork();
+    }
+
+    public void loadingWork(){
         new Thread(){
             @Override
             public void run() {
-                db = openOrCreateDatabase(dbName, MODE_PRIVATE, null);
-                StringBuffer buffer = new StringBuffer();
-                StringBuffer buffer2 = new StringBuffer();
-                for(int i=0;i<totalStageNum;i++){
-                    if(i != 0) {
-                        buffer.append(", ");
-                        buffer2.append(", ");
-                    }
-                    buffer.append("'STAGE"+(i+1)+"' String");
-                    buffer2.append("'STAGE"+(i+1)+"' int");
-                }
-                db.execSQL("CREATE TABLE IF NOT EXISTS "+timeTable+" ("+buffer.toString()+")");
-                db.execSQL("CREATE TABLE IF NOT EXISTS "+starTable+" ("+buffer2.toString()+")");
-
                 loadNickName(); //내장메모리의 텍스트파일에서 닉네임 가져오기
                 loadStageStarInfomation();
                 loadStageTimeInfomation();
             }
         }.start();
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode){
-            case 20:
-                if(resultCode == RESULT_OK){
-                    //데이터 넘겨받기
-                    int numOfStar = data.getIntExtra("numOfStar", 0);
-                    String time = data.getStringExtra("time");
-                    String[] timeArray = time.split(":");
-                    //기록 비교
-                    Cursor cursor = db.rawQuery("SELECT * FROM "+starTable, null);
-                    Cursor cursor2 = db.rawQuery("SELECT * FROM "+timeTable, null);
-                    if(cursor == null || cursor2 == null) return;
-                    while (cursor.moveToNext()){
-                        int record = cursor.getInt(stage-1);
-                        if(record>=numOfStar) numOfStar = record;
-                    }
-                    while (cursor2.moveToNext()){
-                        String record = cursor2.getString(stage-1);  //기록 가져오기
-                        String[] recordArray = record.split(":");   //분과 초 나누기
-                        if( !(recordArray[0].equals("23") && recordArray[1].equals("59") && recordArray[2].equals("59")) ){  //저장된 기록이 초기값이 아니면 비교
-                            int currentHour = Integer.parseInt(timeArray[0].toString());  //현재 hour
-                            int recordHour = Integer.parseInt(recordArray[0].toString()); //기록 hour
-                            int currentMinute = Integer.parseInt(timeArray[1].toString());  //현재 minute
-                            int recordMinute = Integer.parseInt(recordArray[1].toString()); //기록 minute
-                            int curentSecond = Integer.parseInt(timeArray[2].toString());  //현재 second
-                            int recordSecond = Integer.parseInt(recordArray[2].toString()); //기록 minute
-                            if(currentHour >= recordHour){    //현재 hour가 기록 hour보다 크거나 같으면
-                                if(currentMinute >= recordMinute){    //현재 minute가 기록 minute보다 크거나 같으면
-                                    if(curentSecond >= recordSecond){    //현재 second가 기록 second보다 크거나 같으면
-                                        return;  //저장 하지 않도록 탈출
-                                    }
-                                }
-                            }
-
-                        }
-                    }
-                    //화면 갱신
-                    datas.get(stage-1).setStarsNumber(numOfStar);
-                    datas.get(stage-1).setHour(timeArray[0]);
-                    datas.get(stage-1).setMinute(timeArray[1]);
-                    datas.get(stage-1).setSecond(timeArray[2]);
-                    adapter.notifyDataSetChanged();
-                    //데이터 저장
-                    new Thread(){
-                        @Override
-                        public void run() {
-                            //SQLite저장
-                            db.execSQL("UPDATE "+starTable+" SET 'STAGE"+stage+"'="+datas.get(stage-1).getStarsNumber());
-                            db.execSQL("UPDATE "+timeTable+" SET 'STAGE"+stage+"'='"+datas.get(stage-1).getHour()+":"+datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond()+"'");
-                            //MYSQL저장
-                            saveToMYSQL();
-                        }
-                    }.start();
-                }
-                break;
-        }
-    }
-
-    public void loadStageStarInfomation(){
-        Cursor cursor = db.rawQuery("SELECT * FROM "+starTable, null);
-        if(cursor == null) return;
-        if(cursor.getCount() != 0){
-            if(cursor.moveToNext()){
-                for(int i=0; i<totalStageNum; i++){
-                    datas.get(i).setStarsNumber(cursor.getInt(i));
-                }
-            }
-        }else {
-            StringBuffer buffer = new StringBuffer();
-            for(int i=0; i<totalStageNum; i++){
-                if(i != 0) buffer.append(", ");
-                buffer.append("0");
-
-                datas.get(i).setStarsNumber(0);
-            }
-            db.execSQL("INSERT INTO "+starTable+" VALUES("+buffer.toString()+")");
-        }
-    }
-
-    public void loadStageTimeInfomation(){
-        Cursor cursor = db.rawQuery("SELECT * FROM "+timeTable, null);
-        if(cursor == null) return;
-        if(cursor.getCount() != 0){
-            if(cursor.moveToNext()){
-                for(int i=0; i<totalStageNum; i++){
-                    String[] time = cursor.getString(i).split(":");
-                    datas.get(i).setHour(time[0]);
-                    datas.get(i).setMinute(time[1]);
-                    datas.get(i).setSecond(time[2]);
-                }
-            }
-        }else {
-            StringBuffer buffer = new StringBuffer();
-            for(int i=0; i<totalStageNum; i++){
-                if(i != 0) buffer.append(", ");
-                buffer.append("'23:59:59'");
-                datas.get(i).setHour("23");
-                datas.get(i).setMinute("59");
-                datas.get(i).setSecond("59");
-            }
-            db.execSQL("INSERT INTO "+timeTable+" VALUES("+buffer.toString()+")");
-        }
-    }
-
     public void loadNickName(){
         try {
             File file = new File(getFilesDir(), "NickName.txt");
@@ -218,9 +94,162 @@ public class FreeModeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    public void loadStageStarInfomation(){
+        String serverUrl = "http://developer3.dothome.co.kr/MAZEescape/loadStar.php";
+        try{
+            URL url = new URL(serverUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoInput(true);
+            connection.setUseCaches(false);
+
+            query = "nickname="+nickname;
+            OutputStream os = connection.getOutputStream();
+            OutputStreamWriter writer = new OutputStreamWriter(os);
+            writer.write(query, 0, query.length());
+            writer.flush();
+            writer.close();
+
+            //echo결과 받기(작업 확인용)
+            InputStream is = connection.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader reader = new BufferedReader(isr);
+            final StringBuffer buffer = new StringBuffer();
+            String line = reader.readLine();
+            while(line != null){
+                buffer.append(line+"\n");
+                line = reader.readLine();
+            }
+            String echo = buffer.toString();
+            if(echo.equals("loading fail\n")){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(FreeModeActivity.this, "loading fail", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else{
+                String[] array1 = echo.split("\\n");
+                for(int i=0; i<array1.length; i++){
+                    String[] array2 = array1[i].split("=");
+                    if(array2[0].equals("stage"+(i+1))){
+                        datas.get(i).setStarsNumber(Integer.parseInt(array2[1]));
+                    }
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadStageTimeInfomation(){
+        String serverUrl = "http://developer3.dothome.co.kr/MAZEescape/loadTime.php";
+        try{
+            URL url = new URL(serverUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+
+            query = "nickname="+nickname;
+            OutputStream os = connection.getOutputStream();
+            OutputStreamWriter writer = new OutputStreamWriter(os);
+            writer.write(query, 0, query.length());
+            writer.flush();
+            writer.close();
+
+            //echo결과 받기(작업 확인용)
+            InputStream is = connection.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader reader = new BufferedReader(isr);
+            final StringBuffer buffer = new StringBuffer();
+            String line = reader.readLine();
+            while(line != null){
+                buffer.append(line+"\n");
+                line = reader.readLine();
+            }
+            final String echo = buffer.toString();
+            if(echo.equals("loading fail\n")){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(FreeModeActivity.this, "loading fail", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else{
+                String[] array1 = echo.split("\\n");
+                for(int i=0; i<array1.length; i++){
+                    String[] array2 = array1[i].split("=");
+                    if(array2[0].equals("stage"+(i+1))){
+                        String[] hms = array2[1].split(":"); //hms -> hour, minute, second
+                        datas.get(i).setHour(hms[0]);
+                        datas.get(i).setMinute(hms[1]);
+                        datas.get(i).setSecond(hms[2]);
+                    }
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case 20:
+                if(resultCode == RESULT_OK){
+                    //데이터 넘겨받기
+                    int numOfStar = data.getIntExtra("numOfStar", 0);
+                    String timeRecord = data.getStringExtra("time");
+                    String[] timeRecordArray = timeRecord.split(":");
+                    //기록 비교
+                    int hour = Integer.parseInt(datas.get(stage-1).getHour());      //기존 기록(시간)
+                    int minute = Integer.parseInt(datas.get(stage-1).getMinute());      //기존 기록(분)
+                    int second = Integer.parseInt(datas.get(stage-1).getSecond());      //기존 기록(초)
+                    if(datas.get(stage-1).getStarsNumber() < numOfStar) datas.get(stage-1).setStarsNumber(numOfStar);
+                    if(Integer.parseInt(timeRecordArray[0]) <= hour && Integer.parseInt(timeRecordArray[1]) <= minute && Integer.parseInt(timeRecordArray[2]) < second){
+                        datas.get(stage-1).setHour(timeRecordArray[0]);
+                        datas.get(stage-1).setMinute(timeRecordArray[1]);
+                        datas.get(stage-1).setSecond(timeRecordArray[2]);
+                        //데이터 저장
+                        new Thread(){
+                            @Override
+                            public void run() {
+                                saveToMYSQL();      //MYSQL저장
+                            }
+                        }.start();
+                    }
+                    adapter.notifyDataSetChanged();     //화면 갱신
+                }
+                break;
+        }
+    }
 
     public void saveToMYSQL(){
-        serverUrl = "http://developer3.dothome.co.kr/MAZEescape/sendRecordPostType.php";
+        String serverUrl = "http://developer3.dothome.co.kr/MAZEescape/saveData.php";
         try{
             URL url = new URL(serverUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -230,7 +259,8 @@ public class FreeModeActivity extends AppCompatActivity {
             connection.setUseCaches(false);
 
             String time = datas.get(stage-1).getHour()+":"+datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond();
-            query = "nickname="+nickname+"&stage="+stage+"&time="+time;
+            int numOfStar = datas.get(stage-1).getStarsNumber();
+            query = "nickname="+nickname+"&stage="+stage+"&time="+time+"&star="+numOfStar;
             OutputStream os = connection.getOutputStream();
             OutputStreamWriter writer = new OutputStreamWriter(os);
             writer.write(query, 0, query.length());
