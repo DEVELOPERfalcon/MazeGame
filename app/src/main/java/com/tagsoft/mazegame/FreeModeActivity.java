@@ -229,8 +229,17 @@ public class FreeModeActivity extends AppCompatActivity {
                     int hour = Integer.parseInt(datas.get(stage-1).getHour());      //기존 기록(시간)
                     int minute = Integer.parseInt(datas.get(stage-1).getMinute());      //기존 기록(분)
                     int second = Integer.parseInt(datas.get(stage-1).getSecond());      //기존 기록(초)
-                    if(datas.get(stage-1).getStarsNumber() < numOfStar) datas.get(stage-1).setStarsNumber(numOfStar);
-                    if(Integer.parseInt(timeRecordArray[0]) <= hour && Integer.parseInt(timeRecordArray[1]) <= minute && Integer.parseInt(timeRecordArray[2]) < second){
+                    if(datas.get(stage-1).getStarsNumber() < numOfStar) {
+                        datas.get(stage-1).setStarsNumber(numOfStar);
+                        //데이터 저장
+                        new Thread(){
+                            @Override
+                            public void run() {
+                                saveStarToMYSQL();      //MYSQL저장
+                            }
+                        }.start();
+                    }
+                    if(Integer.parseInt(timeRecordArray[0]) < hour){
                         datas.get(stage-1).setHour(timeRecordArray[0]);
                         datas.get(stage-1).setMinute(timeRecordArray[1]);
                         datas.get(stage-1).setSecond(timeRecordArray[2]);
@@ -238,7 +247,29 @@ public class FreeModeActivity extends AppCompatActivity {
                         new Thread(){
                             @Override
                             public void run() {
-                                saveToMYSQL();      //MYSQL저장
+                                saveTimeToMYSQL();      //MYSQL저장
+                            }
+                        }.start();
+                    }else if(Integer.parseInt(timeRecordArray[0]) == hour && Integer.parseInt(timeRecordArray[1]) < minute){
+                        datas.get(stage-1).setHour(timeRecordArray[0]);
+                        datas.get(stage-1).setMinute(timeRecordArray[1]);
+                        datas.get(stage-1).setSecond(timeRecordArray[2]);
+                        //데이터 저장
+                        new Thread(){
+                            @Override
+                            public void run() {
+                                saveTimeToMYSQL();      //MYSQL저장
+                            }
+                        }.start();
+                    }else if(Integer.parseInt(timeRecordArray[0]) == hour && Integer.parseInt(timeRecordArray[1]) == minute && Integer.parseInt(timeRecordArray[2]) < second){
+                        datas.get(stage-1).setHour(timeRecordArray[0]);
+                        datas.get(stage-1).setMinute(timeRecordArray[1]);
+                        datas.get(stage-1).setSecond(timeRecordArray[2]);
+                        //데이터 저장
+                        new Thread(){
+                            @Override
+                            public void run() {
+                                saveTimeToMYSQL();      //MYSQL저장
                             }
                         }.start();
                     }
@@ -248,8 +279,8 @@ public class FreeModeActivity extends AppCompatActivity {
         }
     }
 
-    public void saveToMYSQL(){
-        String serverUrl = "http://developer3.dothome.co.kr/MAZEescape/saveData.php";
+    public void saveTimeToMYSQL(){
+        String serverUrl = "http://developer3.dothome.co.kr/MAZEescape/saveTimeData.php";
         try{
             URL url = new URL(serverUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -259,8 +290,50 @@ public class FreeModeActivity extends AppCompatActivity {
             connection.setUseCaches(false);
 
             String time = datas.get(stage-1).getHour()+":"+datas.get(stage-1).getMinute()+":"+datas.get(stage-1).getSecond();
+            query = "nickname="+nickname+"&stage="+stage+"&time="+time;
+            OutputStream os = connection.getOutputStream();
+            OutputStreamWriter writer = new OutputStreamWriter(os);
+            writer.write(query, 0, query.length());
+            writer.flush();
+            writer.close();
+
+            //echo결과 받기(작업 확인용)
+            InputStream is = connection.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader reader = new BufferedReader(isr);
+            final StringBuffer buffer = new StringBuffer();
+            String line = reader.readLine();
+            while(line != null){
+                buffer.append(line+"\n");
+                line = reader.readLine();
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //Toast.makeText(FreeModeActivity.this, buffer.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveStarToMYSQL(){
+        String serverUrl = "http://developer3.dothome.co.kr/MAZEescape/saveStarData.php";
+        try{
+            URL url = new URL(serverUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+
             int numOfStar = datas.get(stage-1).getStarsNumber();
-            query = "nickname="+nickname+"&stage="+stage+"&time="+time+"&star="+numOfStar;
+            query = "nickname="+nickname+"&stage="+stage+"&star="+numOfStar;
             OutputStream os = connection.getOutputStream();
             OutputStreamWriter writer = new OutputStreamWriter(os);
             writer.write(query, 0, query.length());

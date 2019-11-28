@@ -405,6 +405,14 @@ public class Stars {
                 star3Row=11;
                 star3Col=19;
                 break;
+            case 51:
+                star1Row=14;
+                star1Col=11;
+                star2Row=2;
+                star2Col=39;
+                star3Row=1;
+                star3Col=41;
+                break;
         }
     }
 }

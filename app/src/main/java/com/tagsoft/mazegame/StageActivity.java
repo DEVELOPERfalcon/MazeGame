@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class StageActivity extends AppCompatActivity {
     Intent intent;
     int numOfStar;
     String time;
+    int stage;
 
     DiagonalScrollView diagonalScrollView;
     Chronometer timer;
@@ -50,7 +52,7 @@ public class StageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stage);
 
         intent = getIntent();
-        int stage = intent.getIntExtra("stage", 1);
+        stage = intent.getIntExtra("stage", 1);
 
         getSupportActionBar().setTitle("stage "+stage);
 
@@ -87,15 +89,29 @@ public class StageActivity extends AppCompatActivity {
         @Override
         public void onMove(int angle, int strength) {   //angle: 각도, strength: 강도(중심에서 움직인 거리)
             if(finish) return;  //게임이 끝나면 못 움직이게
-            if (strength > 0) { //움직였으면
-                if (angle <= 45 || angle > 315) {   //오른쪽으로 인식할 각도
-                    board.movePlayer(Board.Direction.RIGHT);    //오른쪽으로 이동
-                } else if (angle <= 135 && angle > 45) {  //위로 인식할 각도
-                    board.movePlayer(Board.Direction.UP);    //위로 이동
-                } else if (angle <= 225 && angle > 135) {  //왼쪽으로 인식할 각도
-                    board.movePlayer(Board.Direction.LEFT);    //왼쪽으로 이동
-                } else if (angle <= 315 && angle > 225) {  //아래로 인식할 각도
-                    board.movePlayer(Board.Direction.DOWN);    //아래로 이동
+            if(stage == 51){        //stage51이면
+                if (strength > 0) { //움직였으면
+                    if (angle <= 45 || angle > 315) {   //오른쪽으로 인식할 각도
+                        board.movePlayer2(Board.Direction.RIGHT);    //오른쪽으로 이동
+                    } else if (angle <= 135 && angle > 45) {  //위로 인식할 각도
+                        board.movePlayer2(Board.Direction.UP);    //위로 이동
+                    } else if (angle <= 225 && angle > 135) {  //왼쪽으로 인식할 각도
+                        board.movePlayer2(Board.Direction.LEFT);    //왼쪽으로 이동
+                    } else if (angle <= 315 && angle > 225) {  //아래로 인식할 각도
+                        board.movePlayer2(Board.Direction.DOWN);    //아래로 이동
+                    }
+                }
+            }else{                  //stage51이 아니면
+                if (strength > 0) { //움직였으면
+                    if (angle <= 45 || angle > 315) {   //오른쪽으로 인식할 각도
+                        board.movePlayer(Board.Direction.RIGHT);    //오른쪽으로 이동
+                    } else if (angle <= 135 && angle > 45) {  //위로 인식할 각도
+                        board.movePlayer(Board.Direction.UP);    //위로 이동
+                    } else if (angle <= 225 && angle > 135) {  //왼쪽으로 인식할 각도
+                        board.movePlayer(Board.Direction.LEFT);    //왼쪽으로 이동
+                    } else if (angle <= 315 && angle > 225) {  //아래로 인식할 각도
+                        board.movePlayer(Board.Direction.DOWN);    //아래로 이동
+                    }
                 }
             }
 
@@ -168,22 +184,38 @@ public class StageActivity extends AppCompatActivity {
     };
 
     public void clickUp(View view) {    //업키 클릭시 1칸 위로 이동
-        board.movePlayer(Board.Direction.UP);
+        if(stage== 51){
+            board.movePlayer2(Board.Direction.UP);
+        }else{
+            board.movePlayer(Board.Direction.UP);
+        }
         workingAfterMove();
     }
 
     public void clickDown(View view) {    //다운키 클릭시 1칸 아래로 이동
-        board.movePlayer(Board.Direction.DOWN);
+        if(stage== 51){
+            board.movePlayer2(Board.Direction.DOWN);
+        }else{
+            board.movePlayer(Board.Direction.DOWN);
+        }
         workingAfterMove();
     }
 
     public void clickLeft(View view) {    //레프트키 클릭시 1칸 왼쪽으로 이동
-        board.movePlayer(Board.Direction.LEFT);
+        if(stage== 51){
+            board.movePlayer2(Board.Direction.LEFT);
+        }else{
+            board.movePlayer(Board.Direction.LEFT);
+        }
         workingAfterMove();
     }
 
     public void clickRight(View view) {    //라이트키 클릭시 1칸 오른쪽으로 이동
-        board.movePlayer(Board.Direction.RIGHT);
+        if(stage== 51){
+            board.movePlayer2(Board.Direction.RIGHT);
+        }else{
+            board.movePlayer(Board.Direction.RIGHT);
+        }
         workingAfterMove();
     }
 
