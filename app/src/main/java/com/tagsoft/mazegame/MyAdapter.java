@@ -1,5 +1,6 @@
 package com.tagsoft.mazegame;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,14 @@ public class MyAdapter extends BaseAdapter {
     LayoutInflater inflater;
     ArrayList<ClearData> datas = new ArrayList<>();
 
-    public MyAdapter(LayoutInflater inflater, ArrayList<ClearData> datas) {
+    boolean stage51Lock = true;
+    int totalStarNum;
+
+    public MyAdapter(LayoutInflater inflater, ArrayList<ClearData> datas, int totalStarNum) {
         this.inflater = inflater;
         this.datas = datas;
+        this.totalStarNum = totalStarNum;
+        if(totalStarNum == 150) stage51Lock = false;
     }
 
     @Override
@@ -37,10 +43,13 @@ public class MyAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
 
-        if(view == null){
+        if(view == null || position != 50 || !stage51Lock){
             view = inflater.inflate(R.layout.stage, viewGroup, false);
         }
-
+        if(position == 50 && stage51Lock) {
+            view = inflater.inflate(R.layout.stage51, viewGroup, false);
+            return view;
+        }
         ClearData clearData = datas.get(position);
 
         TextView stageNumber = view.findViewById(R.id.stage_num);
@@ -52,5 +61,19 @@ public class MyAdapter extends BaseAdapter {
         clearTime.setText(clearData.getHour()+":"+clearData.getMinute()+":"+clearData.getSecond());
 
         return view;
+    }
+
+    public void setStage51Lock(boolean stage51Lock) {
+        this.stage51Lock = stage51Lock;
+    }
+    public void setTotalStarNum(int totalStarNum){
+        this.totalStarNum = totalStarNum;
+    }
+
+    public boolean isStage51Lock() {
+        return stage51Lock;
+    }
+    public int getTotalStarNum() {
+        return totalStarNum;
     }
 }

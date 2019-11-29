@@ -1,5 +1,6 @@
 package com.tagsoft.mazegame;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -36,6 +37,7 @@ public class FreeModeActivity extends AppCompatActivity {
     ArrayList<ClearData> datas = new ArrayList<>();
     int stage;
     int totalStageNum = 51;
+    int totalStarNum = 0;
 
     String query;
     String nickname;
@@ -53,30 +55,45 @@ public class FreeModeActivity extends AppCompatActivity {
             datas.add(new ClearData(i+1));
         }
 
-        adapter = new MyAdapter(getLayoutInflater(), datas);
+        loadingWork();
+
+        adapter = new MyAdapter(getLayoutInflater(), datas, totalStarNum);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 stage = position+1;
-                Intent intent = new Intent(FreeModeActivity.this, StageActivity.class);
-                intent.putExtra("stage", stage);
-                startActivityForResult(intent, 20);
+                if(stage ==51 && adapter.isStage51Lock()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FreeModeActivity.this);
+                    builder.setTitle("알림");
+                    builder.setMessage("stage51은 special stage로서\nstage1부터 stage50까지\n모든 별을 모아야 플레이 가능합니다.\n\n현재 별 갯수: "+totalStarNum);
+                    builder.setPositiveButton("OK", null);
+                    builder.create().show();
+                }else{
+                    Intent intent = new Intent(FreeModeActivity.this, StageActivity.class);
+                    intent.putExtra("stage", stage);
+                    startActivityForResult(intent, 20);
+                }
             }
         });
-
-        loadingWork();
     }
 
     public void loadingWork(){
-        new Thread(){
+        Thread thread = new Thread(){
             @Override
             public void run() {
                 loadNickName(); //내장메모리의 텍스트파일에서 닉네임 가져오기
                 loadStageStarInfomation();
                 loadStageTimeInfomation();
             }
-        }.start();
+        };
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
     public void loadNickName(){
         try {
@@ -133,15 +150,11 @@ public class FreeModeActivity extends AppCompatActivity {
                 for(int i=0; i<array1.length; i++){
                     String[] array2 = array1[i].split("=");
                     if(array2[0].equals("stage"+(i+1))){
-                        datas.get(i).setStarsNumber(Integer.parseInt(array2[1]));
+                        int starNum = Integer.parseInt(array2[1]);
+                        if(i != array1.length-1) totalStarNum += starNum;
+                        datas.get(i).setStarsNumber(starNum);
                     }
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
             }
         } catch (ProtocolException e) {
             e.printStackTrace();
@@ -198,12 +211,6 @@ public class FreeModeActivity extends AppCompatActivity {
                         datas.get(i).setSecond(hms[2]);
                     }
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
             }
         } catch (ProtocolException e) {
             e.printStackTrace();
@@ -230,6 +237,9 @@ public class FreeModeActivity extends AppCompatActivity {
                     int minute = Integer.parseInt(datas.get(stage-1).getMinute());      //기존 기록(분)
                     int second = Integer.parseInt(datas.get(stage-1).getSecond());      //기존 기록(초)
                     if(datas.get(stage-1).getStarsNumber() < numOfStar) {
+                        totalStarNum += (numOfStar - datas.get(stage-1).getStarsNumber());
+                        adapter.setTotalStarNum(totalStarNum);
+                        if(totalStarNum == 150) adapter.setStage51Lock(false);
                         datas.get(stage-1).setStarsNumber(numOfStar);
                         //데이터 저장
                         new Thread(){
