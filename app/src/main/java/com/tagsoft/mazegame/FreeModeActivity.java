@@ -36,6 +36,7 @@ public class FreeModeActivity extends AppCompatActivity {
     MyAdapter adapter;
     ArrayList<ClearData> datas = new ArrayList<>();
     int stage;
+    int numOfStar;
     int totalStageNum = 51;
     int totalStarNum = 0;
 
@@ -229,7 +230,7 @@ public class FreeModeActivity extends AppCompatActivity {
             case 20:
                 if(resultCode == RESULT_OK){
                     //데이터 넘겨받기
-                    int numOfStar = data.getIntExtra("numOfStar", 0);
+                    numOfStar = data.getIntExtra("numOfStar", 0);
                     String timeRecord = data.getStringExtra("time");
                     String[] timeRecordArray = timeRecord.split(":");
                     //기록 비교
@@ -237,14 +238,13 @@ public class FreeModeActivity extends AppCompatActivity {
                     int minute = Integer.parseInt(datas.get(stage-1).getMinute());      //기존 기록(분)
                     int second = Integer.parseInt(datas.get(stage-1).getSecond());      //기존 기록(초)
                     if(datas.get(stage-1).getStarsNumber() < numOfStar) {
-                        totalStarNum += (numOfStar - datas.get(stage-1).getStarsNumber());
-                        adapter.setTotalStarNum(totalStarNum);
-                        if(totalStarNum == 150) adapter.setStage51Lock(false);
-                        datas.get(stage-1).setStarsNumber(numOfStar);
-                        //데이터 저장
                         new Thread(){
                             @Override
                             public void run() {
+                                totalStarNum += (numOfStar - datas.get(stage-1).getStarsNumber());
+                                adapter.setTotalStarNum(totalStarNum);
+                                if(totalStarNum == 150) adapter.setStage51Lock(false);
+                                datas.get(stage-1).setStarsNumber(numOfStar);
                                 saveStarToMYSQL();      //MYSQL저장
                             }
                         }.start();
@@ -313,16 +313,10 @@ public class FreeModeActivity extends AppCompatActivity {
             BufferedReader reader = new BufferedReader(isr);
             final StringBuffer buffer = new StringBuffer();
             String line = reader.readLine();
-            while(line != null){
-                buffer.append(line+"\n");
-                line = reader.readLine();
+            buffer.append(line);
+            if( buffer.toString().equals("upload fail") ) {
+                saveTimeToMYSQL();
             }
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //Toast.makeText(FreeModeActivity.this, buffer.toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
         } catch (ProtocolException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -342,7 +336,7 @@ public class FreeModeActivity extends AppCompatActivity {
             connection.setDoOutput(true);
             connection.setUseCaches(false);
 
-            int numOfStar = datas.get(stage-1).getStarsNumber();
+            numOfStar = datas.get(stage-1).getStarsNumber();
             query = "nickname="+nickname+"&stage="+stage+"&star="+numOfStar;
             OutputStream os = connection.getOutputStream();
             OutputStreamWriter writer = new OutputStreamWriter(os);
@@ -356,16 +350,16 @@ public class FreeModeActivity extends AppCompatActivity {
             BufferedReader reader = new BufferedReader(isr);
             final StringBuffer buffer = new StringBuffer();
             String line = reader.readLine();
-            while(line != null){
-                buffer.append(line+"\n");
-                line = reader.readLine();
+            buffer.append(line);
+            if( buffer.toString().equals("upload fail") ) {
+                saveStarToMYSQL();
             }
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //Toast.makeText(FreeModeActivity.this, buffer.toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Toast.makeText(FreeModeActivity.this, buffer.toString(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
         } catch (ProtocolException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
