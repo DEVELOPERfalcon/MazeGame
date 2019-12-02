@@ -183,7 +183,7 @@ public class OptionActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        showCodeTextView.setText("Code: "+code);
+                        showCodeTextView.setText("Nickname Code: "+code);
                     }
                 });
             }
@@ -285,7 +285,7 @@ public class OptionActivity extends AppCompatActivity {
                                 if(buffer.toString().equals("사용가능한 닉네임입니다.\n저장되었습니다.\n")){
                                     saveNickName(nickname); //내장메모리 저장
                                     saveCode(code);         //내장메모리 저장
-                                    showCodeTextView.setText("Code: "+code);
+                                    showCodeTextView.setText("Nickname Code: "+code);
                                     enteredNickName.setText(nickname);
                                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                                     imm.toggleSoftInput(0, 0);
@@ -358,21 +358,26 @@ public class OptionActivity extends AppCompatActivity {
                         InputStream is = connection.getInputStream();
                         InputStreamReader isr = new InputStreamReader(is);
                         BufferedReader reader = new BufferedReader(isr);
-                        final StringBuffer buffer = new StringBuffer();
-                        String line = reader.readLine();
-                        while(line != null){
-                            buffer.append(line);
-                            line = reader.readLine();
-                        }
-                        if( !buffer.toString().equals("존재하지 않는 코드입니다.") ) {
-                            saveNickName(buffer.toString());
+                        final String line = reader.readLine();
+                        if( !line.equals("존재하지 않는 코드입니다.") ) {
+                            saveNickName(line);
                             saveCode(enteredCode);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    enteredNickName.setText(buffer.toString());
-                                    showCodeTextView.setText("Code: "+code);
+                                    enteredNickName.setText(line);
+                                    showCodeTextView.setText("Nickname Code: "+code);
                                     interlockDialog.dismiss();
+                                }
+                            });
+                        }else{
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    inputCodeEditText.setText("");
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.toggleSoftInput(0, 0);
+                                    Toast.makeText(OptionActivity.this, "존재하지 않는 코드 입니다.", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }

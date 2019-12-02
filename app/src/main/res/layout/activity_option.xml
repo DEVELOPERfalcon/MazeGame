@@ -53,7 +53,7 @@
             android:id="@+id/tv_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Code: null"
+            android:text="Nickname Code: null"
             android:layout_below="@id/tv_nickname"
             android:layout_marginTop="50dp"
             android:textSize="16sp"

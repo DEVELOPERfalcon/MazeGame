@@ -66,9 +66,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
-                if(status == NetworkStatus.TYPE_MOBILE){
-                    networkConnect = true;
-                }else if (status == NetworkStatus.TYPE_WIFI){
+                if(status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI){
                     networkConnect = true;
                 }else {
                     networkConnect = false;

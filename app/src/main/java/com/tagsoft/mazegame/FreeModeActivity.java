@@ -206,10 +206,18 @@ public class FreeModeActivity extends AppCompatActivity {
                 for(int i=0; i<array1.length; i++){
                     String[] array2 = array1[i].split("=");
                     if(array2[0].equals("stage"+(i+1))){
-                        String[] hms = array2[1].split(":"); //hms -> hour, minute, second
-                        datas.get(i).setHour(hms[0]);
-                        datas.get(i).setMinute(hms[1]);
-                        datas.get(i).setSecond(hms[2]);
+                        if(array2[1].equals("00:00:00")){
+                            datas.get(i).setHour("23");
+                            datas.get(i).setMinute("59");
+                            datas.get(i).setSecond("59");
+                        }
+                        else{
+                            String[] hms = array2[1].split(":"); //hms -> hour, minute, second
+                            datas.get(i).setHour(hms[0]);
+                            datas.get(i).setMinute(hms[1]);
+                            datas.get(i).setSecond(hms[2]);
+                        }
+
                     }
                 }
             }
