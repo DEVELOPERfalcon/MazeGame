@@ -406,12 +406,12 @@ public class Stars {
                 star3Col=19;
                 break;
             case 51:
-                star1Row=14;
-                star1Col=11;
-                star2Row=2;
-                star2Col=39;
+                star1Row=2;
+                star1Col=39;
+                star2Row=11;
+                star2Col=52;
                 star3Row=1;
-                star3Col=41;
+                star3Col=80;
                 break;
         }
     }

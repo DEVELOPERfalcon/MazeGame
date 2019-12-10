@@ -23,7 +23,7 @@ public class Board extends View {
     private Stars stars;        //별의 위치 정보를 가짐
 
     public static final int COLS = 22, ROWS = 20;  //미로 만들 칸 갯수 -> 가로:22, 세로:20
-    public static final int COLS2 = 62;         //stage51 전용 column 갯수
+    public static final int COLS2 = 102;         //stage51 전용 column 갯수
     private  final float WALL_THICKNESS = 4;  //벽 두깨
     private  float cellSize, hMargin, vMargin;      //한칸의 크기, 미로의 좌우 여유공간, 미로의 상하 여유공간
     private Paint wallPaint, playerPaint, star1Paint, star2Paint, star3Paint;   //Board에 그릴 것들

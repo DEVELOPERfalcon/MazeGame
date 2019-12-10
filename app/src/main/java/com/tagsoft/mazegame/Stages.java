@@ -42,14 +42,14 @@ public class Stages {
                         for(int i=0;i<Board.ROWS;i++){
                             for(int k=0;k<Board.COLS2;k++){
                                 JSONArray stageData = selectedStage.getJSONArray("stage"+stageNum);
-                                stage2[i][k] = Integer.parseInt(stageData.getString((i*62)+k).toString());
+                                stage2[i][k] = Integer.parseInt(stageData.getString((i*Board.COLS2)+k).toString());
                             }
                         }
                     }else{                          //stage51이 아니면
                         for(int i=0;i<Board.ROWS;i++){
                             for(int k=0;k<Board.COLS;k++){
                                 JSONArray stageData = selectedStage.getJSONArray("stage"+stageNum);
-                                stage[i][k] = Integer.parseInt(stageData.getString((i*22)+k).toString());
+                                stage[i][k] = Integer.parseInt(stageData.getString((i*Board.COLS)+k).toString());
                             }
                         }
                     }

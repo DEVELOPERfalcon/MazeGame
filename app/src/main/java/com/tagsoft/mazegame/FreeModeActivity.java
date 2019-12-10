@@ -1,19 +1,21 @@
 package com.tagsoft.mazegame;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,24 +31,36 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class FreeModeActivity extends AppCompatActivity {
 
-    GridView gridView;
-    MyAdapter adapter;
-    ArrayList<ClearData> datas = new ArrayList<>();
-    int stage;
-    int numOfStar;
-    int totalStageNum = 51;
-    int totalStarNum = 0;
+    private GridView gridView;
+    private MyAdapter adapter;
+    private ArrayList<ClearData> datas = new ArrayList<>();
+    private int stage;
+    private int numOfStar;
+    private int totalStageNum = 51;
+    private int totalStarNum = 0;
 
-    String query;
-    String nickname;
+    private String query;
+    private String nickname;
+
+    private InterstitialAd interstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_free_mode);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId("ca-app-pub-1785598529343763/3749644722");
+        interstitialAd.loadAd(new AdRequest.Builder().build());
 
         getSupportActionBar().setTitle("Stage Select");
 
@@ -233,6 +247,12 @@ public class FreeModeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        int rand = new Random().nextInt(100);
+        if (interstitialAd.isLoaded() && rand<30) {
+            interstitialAd.show();
+        }
+
 
         switch (requestCode){
             case 20:
