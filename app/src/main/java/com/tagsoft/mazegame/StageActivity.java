@@ -45,7 +45,7 @@ public class StageActivity extends AppCompatActivity {
         intent = getIntent();
         stage = intent.getIntExtra("stage", 1);
 
-        getSupportActionBar().setTitle("stage "+stage);
+        getSupportActionBar().setTitle(getString(R.string.stageactivity_title)+stage);
 
         timer = findViewById(R.id.chronometer);
         timer.setText("00:00:00");
@@ -155,7 +155,7 @@ public class StageActivity extends AppCompatActivity {
                 star2.setRating(1); //두번째 별점에 별점주기
                 star3.setRating(1); //세번째 별점에 별점주기
             }
-            tvTime.setText("클리어 타임: "+time);    //텍스트뷰에 클리어 타임 넣기
+            tvTime.setText(getString(R.string.stageactivity_clear_time)+time);    //텍스트뷰에 클리어 타임 넣기
             builder.setView(v); //빌더에 레이아웃 세팅
 
             dialog = builder.create();  //디이얼로그 생성

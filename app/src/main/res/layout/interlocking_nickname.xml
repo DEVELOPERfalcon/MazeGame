@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="Enter Code"
+        android:hint="@string/input_code_hint"
         android:textSize="24sp"
         android:maxLines="1"
         android:textAllCaps="false"
@@ -21,7 +21,7 @@
         android:id="@+id/btn_input_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Input"
+        android:text="@string/input"
         android:textSize="20sp"
         android:textAllCaps="false"/>
 

@@ -62,7 +62,7 @@ public class FreeModeActivity extends AppCompatActivity {
         interstitialAd.setAdUnitId("ca-app-pub-1785598529343763/3749644722");
         interstitialAd.loadAd(new AdRequest.Builder().build());
 
-        getSupportActionBar().setTitle("Stage Select");
+        getSupportActionBar().setTitle(R.string.freemode_stage_select);
 
         gridView = findViewById(R.id.gridview);
 
@@ -80,9 +80,9 @@ public class FreeModeActivity extends AppCompatActivity {
                 stage = position+1;
                 if(stage ==51 && adapter.isStage51Lock()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(FreeModeActivity.this);
-                    builder.setTitle("알림");
-                    builder.setMessage("stage51은 special stage로서\nstage1부터 stage50까지\n모든 별을 모아야 플레이 가능합니다.\n\n현재 별 갯수: "+totalStarNum);
-                    builder.setPositiveButton("OK", null);
+                    builder.setTitle(R.string.freemode_dialog_title);
+                    builder.setMessage(getString(R.string.freemode_dialog_message)+totalStarNum);
+                    builder.setPositiveButton(R.string.dialog_positive_button, null);
                     builder.create().show();
                 }else{
                     Intent intent = new Intent(FreeModeActivity.this, StageActivity.class);
@@ -133,6 +133,7 @@ public class FreeModeActivity extends AppCompatActivity {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoInput(true);
+            connection.setDoOutput(true);
             connection.setUseCaches(false);
 
             query = "nickname="+nickname;
@@ -154,12 +155,13 @@ public class FreeModeActivity extends AppCompatActivity {
             }
             String echo = buffer.toString();
             if(echo.equals("loading fail\n")){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(FreeModeActivity.this, "loading fail", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(FreeModeActivity.this, "loading fail", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+                loadStageStarInfomation();
             }else{
                 String[] array1 = echo.split("\\n");
                 for(int i=0; i<array1.length; i++){
@@ -172,11 +174,11 @@ public class FreeModeActivity extends AppCompatActivity {
                 }
             }
         } catch (ProtocolException e) {
-            e.printStackTrace();
+            loadStageStarInfomation();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            loadStageStarInfomation();
         } catch (IOException e) {
-            e.printStackTrace();
+            loadStageStarInfomation();
         }
     }
 
@@ -209,12 +211,13 @@ public class FreeModeActivity extends AppCompatActivity {
             }
             final String echo = buffer.toString();
             if(echo.equals("loading fail\n")){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(FreeModeActivity.this, "loading fail", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(FreeModeActivity.this, "loading fail", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+                loadStageTimeInfomation();
             }else{
                 String[] array1 = echo.split("\\n");
                 for(int i=0; i<array1.length; i++){
@@ -236,11 +239,11 @@ public class FreeModeActivity extends AppCompatActivity {
                 }
             }
         } catch (ProtocolException e) {
-            e.printStackTrace();
+            loadStageTimeInfomation();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            loadStageTimeInfomation();
         } catch (IOException e) {
-            e.printStackTrace();
+            loadStageTimeInfomation();
         }
     }
 
@@ -346,11 +349,11 @@ public class FreeModeActivity extends AppCompatActivity {
                 saveTimeToMYSQL();
             }
         } catch (ProtocolException e) {
-            e.printStackTrace();
+            saveTimeToMYSQL();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            saveTimeToMYSQL();
         } catch (IOException e) {
-            e.printStackTrace();
+            saveTimeToMYSQL();
         }
     }
 
@@ -389,11 +392,11 @@ public class FreeModeActivity extends AppCompatActivity {
 //                }
 //            });
         } catch (ProtocolException e) {
-            e.printStackTrace();
+            saveStarToMYSQL();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            saveStarToMYSQL();
         } catch (IOException e) {
-            e.printStackTrace();
+            saveStarToMYSQL();
         }
     }
 }

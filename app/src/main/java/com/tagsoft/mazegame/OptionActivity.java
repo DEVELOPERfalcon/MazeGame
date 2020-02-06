@@ -73,7 +73,7 @@ public class OptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
 
-        getSupportActionBar().setTitle("설정");
+        getSupportActionBar().setTitle(getString(R.string.option));
 
         findView();
         setListener();
@@ -127,7 +127,7 @@ public class OptionActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         enteredNickName.setText(nickname);
-                        nickNameChange.setText("Change");
+                        nickNameChange.setText(getString(R.string.change));
                     }
                 });
                 //Toast.makeText(this, "내장메모리 저장", Toast.LENGTH_SHORT).show();
@@ -183,7 +183,7 @@ public class OptionActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        showCodeTextView.setText("Nickname Code: "+code);
+                        showCodeTextView.setText(getString(R.string.nickname_code)+code);
                     }
                 });
             }
@@ -285,11 +285,11 @@ public class OptionActivity extends AppCompatActivity {
                                 if(buffer.toString().equals("사용가능한 닉네임입니다.\n저장되었습니다.\n")){
                                     saveNickName(nickname); //내장메모리 저장
                                     saveCode(code);         //내장메모리 저장
-                                    showCodeTextView.setText("Nickname Code: "+code);
+                                    showCodeTextView.setText(getString(R.string.nickname_code)+code);
                                     enteredNickName.setText(nickname);
                                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                                     imm.toggleSoftInput(0, 0);
-                                    nickNameChange.setText("Change");
+                                    nickNameChange.setText(getString(R.string.change));
                                     dialog.dismiss();
                                 }
                             }
@@ -325,7 +325,7 @@ public class OptionActivity extends AppCompatActivity {
             inputCodeButton.setOnClickListener(inputCodeListener);
 
             builder.setView(v);
-            builder.setNegativeButton("취소", null);
+            builder.setNegativeButton(getString(R.string.dialog_negative_button), null);
             interlockDialog = builder.create();
             interlockDialog.setCancelable(false);
             interlockDialog.show();
@@ -366,7 +366,7 @@ public class OptionActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     enteredNickName.setText(line);
-                                    showCodeTextView.setText("Nickname Code: "+code);
+                                    showCodeTextView.setText(getString(R.string.nickname_code)+code);
                                     interlockDialog.dismiss();
                                 }
                             });
@@ -377,7 +377,7 @@ public class OptionActivity extends AppCompatActivity {
                                     inputCodeEditText.setText("");
                                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                                     imm.toggleSoftInput(0, 0);
-                                    Toast.makeText(OptionActivity.this, "존재하지 않는 코드 입니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(OptionActivity.this, R.string.code_not_exist, Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">미로탈출게임</string>
+    <string name="connect_http"><u>각 스테이지별\n최고기록 확인하러 가기</u></string>
+    <string name="acade_mode">아케이드 모드</string>
+    <string name="free_mode">프리모드</string>
+    <string name="option">설정</string>
+    <string name="exit">종료</string>
+    <string name="nickname">닉네임</string>
+    <string name="input_nickname">닉네임 입력</string>
+    <string name="input_nickname_hint">사용할 닉네임을 입력해주세요.</string>
+    <string name="minimum_size">최소 6byte</string>
+    <string name="overlap_check">중복 조회(저장)</string>
+    <string name="input_code_hint">코드 입력</string>
+    <string name="input">입력</string>
+    <string name="change">변경</string>
+    <string name="default_nickname_code">닉네임 코드: 없음</string>
+    <string name="nickname_code">닉네임 코드: </string>
+    <string name="code_not_exist">존재하지 않는 코드 입니다.</string>
+    <string name="nickname_interlocking">코드로 닉네임 동기화하기</string>
+    <string name="joystick_location">조이스틱 위치</string>
+    <string name="left">좌</string>
+    <string name="center">중</string>
+    <string name="right">우</string>
+    <string name="freemode_stage_select">스테이지 선택</string>
+    <string name="freemode_dialog_title">알림</string>
+    <string name="freemode_dialog_message"><u>stage51은 special stage로서\nstage1부터 stage50까지\n모든 별을 모아야 플레이 가능합니다.\n\n현재 별 갯수: </u></string>
+    <string name="dialog_positive_button">확인</string>
+    <string name="dialog_negative_button">취소</string>
+    <string name="stageactivity_title">스테이지 </string>
+    <string name="stageactivity_clear_time">클리어 타임: </string>
+    <string name="mainactivity_network_disconnected">연결 안 됨</string>
+    <string name="mainactivity_network_connected">연결됨</string>
+    <string name="mainactivity_nickname_not_saved">저장 안 됨</string>
+    <string name="mainactivity_nickname_saved">저장됨</string>
+    <string name="mainactivity_message1">Free Mode는 클리어시간을 업로드하기 위해\n\n</string>
+    <string name="mainactivity_message2">1. 인터넷 연결(</string>
+    <string name="mainactivity_message3">2. 옵션(설정)에서 닉네임 저장(</string>
+    <string name="mainactivity_message4">이 필요합니다.</string>
+
+</resources>

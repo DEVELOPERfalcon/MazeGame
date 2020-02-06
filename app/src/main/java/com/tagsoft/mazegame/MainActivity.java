@@ -117,16 +117,16 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 String networkConnectState;
                 String nicknameExistState;
-                if(!networkConnect) networkConnectState = "연결 안됨";
-                else networkConnectState = "연결됨";
-                if(!nicknameExist) nicknameExistState = "저장 안됨";
-                else nicknameExistState = "저장됨";
+                if(!networkConnect) networkConnectState = getString(R.string.mainactivity_network_disconnected);
+                else networkConnectState = getString(R.string.mainactivity_network_connected);
+                if(!nicknameExist) nicknameExistState = getString(R.string.mainactivity_nickname_not_saved);
+                else nicknameExistState = getString(R.string.mainactivity_nickname_saved);
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage("Free Mode는 클리어시간을 업로드하기 위해\n\n" +
-                        "1. 인터넷 연결("+networkConnectState+")\n" +
-                        "2. 옵션(설정)에서 닉네임 저장("+nicknameExistState+")\n\n" +
-                        "이 필요합니다.");
-                builder.setNeutralButton("확인", null);
+                builder.setMessage(getString(R.string.mainactivity_message1) +
+                        getString(R.string.mainactivity_message2)+networkConnectState+")\n" +
+                        getString(R.string.mainactivity_message3)+nicknameExistState+")\n\n" +
+                        getString(R.string.mainactivity_message4));
+                builder.setNeutralButton(getString(R.string.dialog_positive_button), null);
                 builder.create().show();
             }
 
